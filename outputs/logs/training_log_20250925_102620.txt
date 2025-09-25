@@ -1,0 +1,208 @@
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI Logger initialized. Dynamic log: /content/drive/MyDrive/ai_train/outputs/logs/training_log_20250925_102620.txt, Static log: /content/drive/MyDrive/ai_train/outputs/logs/train.log
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI === Starting EnhancedScalpingAI Pipeline ===
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI Arguments: {'data_dir': PosixPath('/content/drive/MyDrive/ai_train/data'), 'max_rows': None, 'session': 'all', 'main_tf': '15T', 'high_tf': ['1H'], 'high_tf_profile': None, 'signal_mode': 'binary', 'split_method': 'timeseries', 'imbalance_method': 'none', 'tune_signal': False, 'signal_trials': 30, 'signal_future_bars': None, 'signal_threshold': None, 'signal_dynamic': False, 'use_triple_barrier': False, 'trainer': 'ensemble', 'tune_ensemble': False, 'n_trials': 20}
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI Using high timeframes from CLI: ['1H']
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI Resolved high timeframes: ['1H']
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI Main timeframe: 15T
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI PHASE 1: Data loading (base timeframe only)
+2025-09-25 10:26:21 [INFO    ] EnhancedScalpingAI Found 1 CSV file: /content/drive/MyDrive/ai_train/data/EURUSD_M1.csv
+2025-09-25 10:26:21 [DEBUG   ] EnhancedScalpingAI Autodetected delimiter: '','' for EURUSD_M1.csv
+2025-09-25 10:26:22 [INFO    ] EnhancedScalpingAI Detected headerless 6-column format with delimiter='','': EURUSD_M1.csv
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Cleaned market data: total=100000, removed_negative=0, removed_invalid=0, removed_nan=0, final=100000
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Validating data format after parsing...
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Data validation passed
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Loaded data from /content/drive/MyDrive/ai_train/data/EURUSD_M1.csv with shape (100000, 6), columns=['datetime', 'open', 'high', 'low', 'close', 'volume']
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Loaded base TF data: 15T, 100000 rows
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI High timeframes for resampling: ['1H']
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI [Base_TF] DataFrame validation passed: 100000 rows, 6 columns
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI PHASE 2: Session filtering
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI No session filter applied (using all data).
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI 📊 Session filtering: 100000 → 100000 rows (100.0% retained)
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI PHASE 3: Raw data splitting
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI 📊 Split results - Train: 72000, Valid: 8000, Test: 20000
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI PHASE 4: Feature engineering & signal generation
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI 🔥 Processing splits with NEW feature engineering approach
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI [train] Processing 72000 rows from 15T
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI [train] Generating trading signals...
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005, dynamic=True
+2025-09-25 10:26:23 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(45186, 9)
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 22952, -1: 22234}
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI Signal quality: score=0.741, distribution={1: 22952, -1: 22234}
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI [train] Signals generated: 45186 rows
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI [train] Creating features with high TFs: ['1H']
+2025-09-25 10:26:23 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=72000, cols=6
+2025-09-25 10:26:24 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 10:26:24 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 10:26:39 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (72000, 67)
+2025-09-25 10:26:39 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 10:26:39 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=72000, after=72000 (dropped=0)
+2025-09-25 10:26:39 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [FE] final features: rows=72000, cols=67
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Features created: (72000, 67)
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Aligning features and signals...
+2025-09-25 10:26:39 [WARNING ] EnhancedScalpingAI ⚠️  Found 2 NaN values in signal_encoded
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for train
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Alignment successful: 72000 rows
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Cleaned signals: 71998/72000 rows retained
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 71998 rows
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {1.0: 36805, 0.0: 35193}
+2025-09-25 10:26:39 [WARNING ] EnhancedScalpingAI [train] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Final features shape: (71998, 73)
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [train] Final dataset: 71998 samples, 73 features
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [valid] Processing 8000 rows from 15T
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [valid] Generating trading signals...
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005, dynamic=True
+2025-09-25 10:26:39 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(4987, 9)
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 2579, 1: 2408}
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI Signal quality: score=0.730, distribution={-1: 2579, 1: 2408}
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [valid] Signals generated: 4987 rows
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [valid] Creating features with high TFs: ['1H']
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=8000, cols=6
+2025-09-25 10:26:39 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 10:26:39 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 10:26:41 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (8000, 67)
+2025-09-25 10:26:41 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 10:26:41 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=8000, after=8000 (dropped=0)
+2025-09-25 10:26:41 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [FE] final features: rows=8000, cols=67
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Features created: (8000, 67)
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Aligning features and signals...
+2025-09-25 10:26:41 [WARNING ] EnhancedScalpingAI ⚠️  Found 1 NaN values in signal_encoded
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for valid
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Alignment successful: 8000 rows
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Cleaned signals: 7999/8000 rows retained
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 7999 rows
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {0.0: 4049, 1.0: 3950}
+2025-09-25 10:26:41 [WARNING ] EnhancedScalpingAI [valid] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Final features shape: (7999, 73)
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [valid] Final dataset: 7999 samples, 73 features
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [test] Processing 20000 rows from 15T
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [test] Generating trading signals...
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005, dynamic=True
+2025-09-25 10:26:41 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(12408, 9)
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 6226, -1: 6182}
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI Signal quality: score=0.748, distribution={1: 6226, -1: 6182}
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [test] Signals generated: 12408 rows
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [test] Creating features with high TFs: ['1H']
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=20000, cols=6
+2025-09-25 10:26:41 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 10:26:41 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 10:26:44 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (20000, 67)
+2025-09-25 10:26:44 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 10:26:44 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=20000, after=20000 (dropped=0)
+2025-09-25 10:26:44 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [FE] final features: rows=20000, cols=67
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Features created: (20000, 67)
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Aligning features and signals...
+2025-09-25 10:26:44 [WARNING ] EnhancedScalpingAI ⚠️  Found 2 NaN values in signal_encoded
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for test
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Alignment successful: 20000 rows
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Cleaned signals: 19998/20000 rows retained
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 19998 rows
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {1.0: 10086, 0.0: 9912}
+2025-09-25 10:26:44 [WARNING ] EnhancedScalpingAI [test] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Final features shape: (19998, 73)
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI [test] Final dataset: 19998 samples, 73 features
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI 🎯 FINAL DATA SUMMARY:
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI 📊 Training: 71998 samples, 73 features
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI 📊 Validation: 7999 samples
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI 📊 Test: 19998 samples
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI 🎯 Training target distribution: {1.0: 36805, 0.0: 35193}
+2025-09-25 10:26:44 [INFO    ] EnhancedScalpingAI PHASE 6: Training
+2025-09-25 10:26:45 [WARNING ] EnhancedScalpingAI [train] Removing non-numeric columns: ['datetime']
+2025-09-25 10:26:45 [WARNING ] EnhancedScalpingAI [valid] Removing non-numeric columns: ['datetime']
+2025-09-25 10:26:45 [WARNING ] EnhancedScalpingAI [test] Removing non-numeric columns: ['datetime']
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 🎯 TRAINING DATA OVERVIEW:
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 📊 Samples: 71998
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 📊 Features: 72
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 📊 Task type: binary
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 📊 Original labels: [0.0, 1.0]
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 📊 Label distribution: {1.0: 36805, 0.0: 35193}
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 📊 Numeric features: 72
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI Loaded best_params from /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_best_params.json
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 🎛️ TUNING CONFIGURATION:
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI    - Tuning enabled: True
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI    - Number of trials: 20
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI    - Objective metric: profit_weighted_accuracy
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI 🔍 Starting LightGBM tuning...
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI Starting LightGBM tuning...
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI [LightGBM] [Warning] There are no meaningful features which satisfy the provided configuration. Decreasing Dataset parameters min_data_in_bin or min_data_in_leaf and re-constructing Dataset might resolve this warning.
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Number of positive: 1, number of negative: 1
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] This is the GPU trainer!!
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Total Bins 0
+2025-09-25 10:26:45 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Number of data points in the train set: 2, number of used features: 0
+2025-09-25 10:26:46 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Using GPU Device: Tesla T4, Vendor: NVIDIA Corporation
+2025-09-25 10:26:46 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Compiling OpenCL Kernel with 16 bins...
+2025-09-25 10:26:50 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] GPU programs have been built
+2025-09-25 10:26:50 [INFO    ] EnhancedScalpingAI [LightGBM] [Warning] GPU acceleration is disabled because no non-trivial dense features can be found
+2025-09-25 10:26:50 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] [binary:BoostFromScore]: pavg=0.500000 -> initscore=0.000000
+2025-09-25 10:26:50 [INFO    ] EnhancedScalpingAI [LightGBM] [Warning] Stopped training because there are no more leaves that meet the split requirements
+2025-09-25 10:26:51 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:26:51 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:27:37 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:27:37 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:28:19 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:28:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:29:11 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:29:11 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:29:41 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:29:41 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:30:31 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:30:31 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:30:56 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:30:56 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:31:08 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:31:08 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:31:45 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:31:45 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:32:04 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:32:04 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:32:11 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:32:11 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 10:32:23 [INFO    ] EnhancedScalpingAI LightGBM: GPU available → using GPU
+2025-09-25 10:32:23 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning

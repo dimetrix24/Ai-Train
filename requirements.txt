@@ -1,0 +1,34 @@
+# Core Data Processing
+pandas
+numpy
+scipy
+polars
+
+# Machine Learning
+scikit-learn
+imbalanced-learn
+lightgbm
+xgboost
+optuna
+
+# Technical Analysis
+ta
+# ta-lib  # (tidak dipakai default di Colab, susah build)
+
+# Data Visualization
+matplotlib
+seaborn
+
+# Utilities
+joblib
+tqdm
+onnx
+
+# Logging and Configuration
+python-dotenv
+
+# Date/Time Handling
+python-dateutil
+pytz
+
+

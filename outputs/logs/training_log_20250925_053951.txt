@@ -1,0 +1,607 @@
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Logger initialized. Dynamic log: /content/drive/MyDrive/ai_train/outputs/logs/training_log_20250925_053951.txt, Static log: /content/drive/MyDrive/ai_train/outputs/logs/train.log
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI === Starting EnhancedScalpingAI Pipeline ===
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Arguments: {'data_dir': PosixPath('/content/drive/MyDrive/ai_train/data'), 'max_rows': None, 'session': 'all', 'main_tf': '15T', 'high_tf': ['1H'], 'high_tf_profile': None, 'signal_mode': 'binary', 'split_method': 'timeseries', 'imbalance_method': 'none', 'tune_signal': True, 'signal_trials': 50, 'signal_future_bars': None, 'signal_threshold': None, 'signal_dynamic': False, 'use_triple_barrier': False, 'trainer': 'ensemble', 'tune_ensemble': True, 'n_trials': 50}
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Using high timeframes from CLI: ['1H']
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Resolved high timeframes: ['1H']
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Main timeframe: 15T
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI PHASE 1: Data loading (base timeframe only)
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Found 2 CSV files: ['XAUUSD15.csv', 'EURUSD_M1.csv']
+2025-09-25 05:39:51 [INFO    ] EnhancedScalpingAI Loading file 1/2: XAUUSD15.csv
+2025-09-25 05:39:52 [DEBUG   ] EnhancedScalpingAI Autodetected delimiter: ''\t'' for XAUUSD15.csv
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Detected headerless 6-column format with delimiter=''\t'': XAUUSD15.csv
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Cleaned market data: total=100000, removed_negative=0, removed_invalid=0, removed_nan=0, final=100000
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Validating data format after parsing...
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Data validation passed
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Loaded data from /content/drive/MyDrive/ai_train/data/XAUUSD15.csv with shape (100000, 6), columns=['datetime', 'open', 'high', 'low', 'close', 'volume']
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Loaded 100000 rows from XAUUSD15.csv, total: 100000
+2025-09-25 05:39:52 [INFO    ] EnhancedScalpingAI Loading file 2/2: EURUSD_M1.csv
+2025-09-25 05:39:53 [DEBUG   ] EnhancedScalpingAI Autodetected delimiter: '','' for EURUSD_M1.csv
+2025-09-25 05:39:53 [INFO    ] EnhancedScalpingAI Detected headerless 6-column format with delimiter='','': EURUSD_M1.csv
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Cleaned market data: total=100000, removed_negative=0, removed_invalid=0, removed_nan=0, final=100000
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Validating data format after parsing...
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Data validation passed
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Loaded data from /content/drive/MyDrive/ai_train/data/EURUSD_M1.csv with shape (100000, 6), columns=['datetime', 'open', 'high', 'low', 'close', 'volume']
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Loaded 100000 rows from EURUSD_M1.csv, total: 200000
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Removed 6364 duplicate timestamps after merging
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Merged 2 files, final shape: (193636, 6)
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI Loaded base TF data: 15T, 193636 rows
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI High timeframes for resampling: ['1H']
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI [Base_TF] DataFrame validation passed: 193636 rows, 6 columns
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI PHASE 2: Session filtering
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI No session filter applied (using all data).
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI 📊 Session filtering: 193636 → 193636 rows (100.0% retained)
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI PHASE 3: Raw data splitting
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI 📊 Split results - Train: 139417, Valid: 15491, Test: 38728
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI PHASE 4: Feature engineering & signal generation
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI 🔧 Tuning signal parameters on TRAINING DATA ONLY
+2025-09-25 05:39:54 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=139417, cols=6
+2025-09-25 05:39:55 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 05:39:55 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 05:40:30 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (139417, 67)
+2025-09-25 05:40:30 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 05:40:30 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=139417, after=139417 (dropped=0)
+2025-09-25 05:40:31 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI [FE] final features: rows=139417, cols=67
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Starting enhanced signal parameter tuning...
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.007969454818643935, dynamic=True
+2025-09-25 05:40:31 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Signals generated using future 9 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(95784, 70)
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 49736, -1: 46048}
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Signal quality: score=0.728, distribution={1: 49736, -1: 46048}
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00020511104188433984, dynamic=False
+2025-09-25 05:40:31 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.00020511104188433984 (base timeframe only)), final shape=(96341, 70)
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 49380, -1: 46961}
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI Signal quality: score=0.735, distribution={1: 49380, -1: 46961}
+2025-09-25 05:40:31 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0026070247583707684, dynamic=False
+2025-09-25 05:40:32 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signals generated using future 13 bars (mode=binary, threshold=static=0.0026070247583707684 (base timeframe only)), final shape=(27911, 70)
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 14697, -1: 13214}
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signal quality: score=0.720, distribution={1: 14697, -1: 13214}
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00026587543983272726, dynamic=False
+2025-09-25 05:40:32 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signals generated using future 17 bars (mode=binary, threshold=static=0.00026587543983272726 (base timeframe only)), final shape=(107391, 70)
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 55520, -1: 51871}
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signal quality: score=0.730, distribution={1: 55520, -1: 51871}
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0011207606211860567, dynamic=True
+2025-09-25 05:40:32 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signals generated using future 8 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(93696, 70)
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 48522, -1: 45174}
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Signal quality: score=0.729, distribution={1: 48522, -1: 45174}
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:32 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00019010245319870352, dynamic=False
+2025-09-25 05:40:33 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signals generated using future 14 bars (mode=binary, threshold=static=0.00019010245319870352 (base timeframe only)), final shape=(113038, 70)
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 58531, -1: 54507}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal quality: score=0.729, distribution={1: 58531, -1: 54507}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0037183641805732083, dynamic=False
+2025-09-25 05:40:33 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signals generated using future 11 bars (mode=binary, threshold=static=0.0037183641805732083 (base timeframe only)), final shape=(14280, 70)
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 7415, -1: 6865}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal quality: score=0.728, distribution={1: 7415, -1: 6865}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001238513729886094, dynamic=True
+2025-09-25 05:40:33 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signals generated using future 13 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(101573, 70)
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 52958, -1: 48615}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal quality: score=0.725, distribution={1: 52958, -1: 48615}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.007902619549708232, dynamic=True
+2025-09-25 05:40:33 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(78500, 70)
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 40373, -1: 38127}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Signal quality: score=0.733, distribution={1: 40373, -1: 38127}
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:33 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001567993391672301, dynamic=True
+2025-09-25 05:40:34 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signals generated using future 8 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(93696, 70)
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 48522, -1: 45174}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal quality: score=0.729, distribution={1: 48522, -1: 45174}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005338943774556118, dynamic=False
+2025-09-25 05:40:34 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.0005338943774556118 (base timeframe only)), final shape=(56718, 70)
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 29171, -1: 27547}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal quality: score=0.733, distribution={1: 29171, -1: 27547}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0006990942480645244, dynamic=True
+2025-09-25 05:40:34 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(70870, 70)
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 36321, -1: 34549}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal quality: score=0.735, distribution={1: 36321, -1: 34549}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005371427916640307, dynamic=False
+2025-09-25 05:40:34 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.0005371427916640307 (base timeframe only)), final shape=(65370, 70)
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 33768, -1: 31602}
+2025-09-25 05:40:34 [INFO    ] EnhancedScalpingAI Signal quality: score=0.731, distribution={1: 33768, -1: 31602}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00042038458443136153, dynamic=True
+2025-09-25 05:40:35 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signals generated using future 6 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(88077, 70)
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 45473, -1: 42604}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal quality: score=0.731, distribution={1: 45473, -1: 42604}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0011782800596762833, dynamic=False
+2025-09-25 05:40:35 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.0011782800596762833 (base timeframe only)), final shape=(28249, 70)
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 14684, -1: 13565}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal quality: score=0.727, distribution={1: 14684, -1: 13565}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00028315407094278066, dynamic=True
+2025-09-25 05:40:35 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(107932, 70)
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 56342, -1: 51590}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal quality: score=0.725, distribution={1: 56342, -1: 51590}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.001957550079907452, dynamic=False
+2025-09-25 05:40:35 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signals generated using future 6 bars (mode=binary, threshold=static=0.001957550079907452 (base timeframe only)), final shape=(23421, 70)
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 12176, -1: 11245}
+2025-09-25 05:40:35 [INFO    ] EnhancedScalpingAI Signal quality: score=0.727, distribution={1: 12176, -1: 11245}
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0008657857585898337, dynamic=True
+2025-09-25 05:40:36 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signals generated using future 7 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(91080, 70)
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 47101, -1: 43979}
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signal quality: score=0.730, distribution={1: 47101, -1: 43979}
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003296550266364106, dynamic=False
+2025-09-25 05:40:36 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signals generated using future 9 bars (mode=binary, threshold=static=0.0003296550266364106 (base timeframe only)), final shape=(91110, 70)
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 47230, -1: 43880}
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signal quality: score=0.729, distribution={1: 47230, -1: 43880}
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0006372544514670474, dynamic=True
+2025-09-25 05:40:36 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signals generated using future 11 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(98690, 70)
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 51368, -1: 47322}
+2025-09-25 05:40:36 [INFO    ] EnhancedScalpingAI Signal quality: score=0.726, distribution={1: 51368, -1: 47322}
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00010751384709922154, dynamic=False
+2025-09-25 05:40:37 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.00010751384709922154 (base timeframe only)), final shape=(113498, 70)
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 58148, -1: 55350}
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 58148, -1: 55350}
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00012931585171071705, dynamic=False
+2025-09-25 05:40:37 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.00012931585171071705 (base timeframe only)), final shape=(109031, 70)
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 55819, -1: 53212}
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 55819, -1: 53212}
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:37 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00010509459569382129, dynamic=False
+2025-09-25 05:40:37 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00010509459569382129 (base timeframe only)), final shape=(107564, 70)
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 54785, -1: 52779}
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signal quality: score=0.739, distribution={1: 54785, -1: 52779}
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00011126409354163822, dynamic=False
+2025-09-25 05:40:38 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.00011126409354163822 (base timeframe only)), final shape=(112788, 70)
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 57784, -1: 55004}
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 57784, -1: 55004}
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00012912280458915977, dynamic=False
+2025-09-25 05:40:38 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signals generated using future 7 bars (mode=binary, threshold=static=0.00012912280458915977 (base timeframe only)), final shape=(113337, 70)
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 58362, -1: 54975}
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Signal quality: score=0.733, distribution={1: 58362, -1: 54975}
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:38 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00010426518973806694, dynamic=False
+2025-09-25 05:40:39 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.00010426518973806694 (base timeframe only)), final shape=(111351, 70)
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 56891, -1: 54460}
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signal quality: score=0.737, distribution={1: 56891, -1: 54460}
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00021543558155192244, dynamic=False
+2025-09-25 05:40:39 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00021543558155192244 (base timeframe only)), final shape=(86822, 70)
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 44315, -1: 42507}
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 44315, -1: 42507}
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00019194132271333817, dynamic=False
+2025-09-25 05:40:39 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00019194132271333817 (base timeframe only)), final shape=(90403, 70)
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 46119, -1: 44284}
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 46119, -1: 44284}
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:39 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00021053955894187638, dynamic=False
+2025-09-25 05:40:40 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00021053955894187638 (base timeframe only)), final shape=(87579, 70)
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 44698, -1: 42881}
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 44698, -1: 42881}
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00039052312243260197, dynamic=False
+2025-09-25 05:40:40 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signals generated using future 10 bars (mode=binary, threshold=static=0.00039052312243260197 (base timeframe only)), final shape=(87483, 70)
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 45458, -1: 42025}
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signal quality: score=0.727, distribution={1: 45458, -1: 42025}
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001886202516987235, dynamic=False
+2025-09-25 05:40:40 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signals generated using future 16 bars (mode=binary, threshold=static=0.0001886202516987235 (base timeframe only)), final shape=(114870, 70)
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 59331, -1: 55539}
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Signal quality: score=0.731, distribution={1: 59331, -1: 55539}
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:40 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0002474222613655822, dynamic=False
+2025-09-25 05:40:40 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.0002474222613655822 (base timeframe only)), final shape=(82282, 70)
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 42088, -1: 40194}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 42088, -1: 40194}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00017104589998941517, dynamic=False
+2025-09-25 05:40:41 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.00017104589998941517 (base timeframe only)), final shape=(98596, 70)
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 50440, -1: 48156}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 50440, -1: 48156}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00024173139338765713, dynamic=False
+2025-09-25 05:40:41 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signals generated using future 6 bars (mode=binary, threshold=static=0.00024173139338765713 (base timeframe only)), final shape=(94252, 70)
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 48547, -1: 45705}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal quality: score=0.732, distribution={1: 48547, -1: 45705}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00037262572032478687, dynamic=False
+2025-09-25 05:40:41 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00037262572032478687 (base timeframe only)), final shape=(68945, 70)
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 35347, -1: 33598}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Signal quality: score=0.735, distribution={1: 35347, -1: 33598}
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:41 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001536231242021555, dynamic=False
+2025-09-25 05:40:42 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.0001536231242021555 (base timeframe only)), final shape=(101695, 70)
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 52011, -1: 49684}
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signal quality: score=0.737, distribution={1: 52011, -1: 49684}
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00023137312297718702, dynamic=False
+2025-09-25 05:40:42 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signals generated using future 7 bars (mode=binary, threshold=static=0.00023137312297718702 (base timeframe only)), final shape=(97834, 70)
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 50392, -1: 47442}
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signal quality: score=0.732, distribution={1: 50392, -1: 47442}
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001918646755493794, dynamic=False
+2025-09-25 05:40:42 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.0001918646755493794 (base timeframe only)), final shape=(94955, 70)
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 48538, -1: 46417}
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Signal quality: score=0.737, distribution={1: 48538, -1: 46417}
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:42 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003147779412374289, dynamic=False
+2025-09-25 05:40:43 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signals generated using future 20 bars (mode=binary, threshold=static=0.0003147779412374289 (base timeframe only)), final shape=(105493, 70)
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 54756, -1: 50737}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal quality: score=0.728, distribution={1: 54756, -1: 50737}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00014444886203358688, dynamic=False
+2025-09-25 05:40:43 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signals generated using future 8 bars (mode=binary, threshold=static=0.00014444886203358688 (base timeframe only)), final shape=(112628, 70)
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 58153, -1: 54475}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal quality: score=0.731, distribution={1: 58153, -1: 54475}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0013669785453657975, dynamic=False
+2025-09-25 05:40:43 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signals generated using future 13 bars (mode=binary, threshold=static=0.0013669785453657975 (base timeframe only)), final shape=(51381, 70)
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 27168, -1: 24213}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal quality: score=0.717, distribution={1: 27168, -1: 24213}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00010716239797269529, dynamic=False
+2025-09-25 05:40:43 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.00010716239797269529 (base timeframe only)), final shape=(110926, 70)
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 56660, -1: 54266}
+2025-09-25 05:40:43 [INFO    ] EnhancedScalpingAI Signal quality: score=0.737, distribution={1: 56660, -1: 54266}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00010096674278088578, dynamic=False
+2025-09-25 05:40:44 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00010096674278088578 (base timeframe only)), final shape=(109228, 70)
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 55630, -1: 53598}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signal quality: score=0.739, distribution={1: 55630, -1: 53598}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00020679076350830732, dynamic=False
+2025-09-25 05:40:44 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.00020679076350830732 (base timeframe only)), final shape=(88144, 70)
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 44993, -1: 43151}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 44993, -1: 43151}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00015495193295901296, dynamic=False
+2025-09-25 05:40:44 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signals generated using future 6 bars (mode=binary, threshold=static=0.00015495193295901296 (base timeframe only)), final shape=(106993, 70)
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 55106, -1: 51887}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI Signal quality: score=0.732, distribution={1: 55106, -1: 51887}
+2025-09-25 05:40:44 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.008351302863963883, dynamic=False
+2025-09-25 05:40:45 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.008351302863963883 (base timeframe only)), final shape=(320, 70)
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 177, 1: 143}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal quality: score=0.692, distribution={-1: 177, 1: 143}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001345258676478773, dynamic=False
+2025-09-25 05:40:45 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.0001345258676478773 (base timeframe only)), final shape=(108279, 70)
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 55418, -1: 52861}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 55418, -1: 52861}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.003947481499860404, dynamic=False
+2025-09-25 05:40:45 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.003947481499860404 (base timeframe only)), final shape=(4087, 70)
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 2070, 1: 2017}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal quality: score=0.742, distribution={-1: 2070, 1: 2017}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.004748160737295772, dynamic=False
+2025-09-25 05:40:45 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signals generated using future 15 bars (mode=binary, threshold=static=0.004748160737295772 (base timeframe only)), final shape=(12513, 70)
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 6537, -1: 5976}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal quality: score=0.724, distribution={1: 6537, -1: 5976}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0060132995548463995, dynamic=False
+2025-09-25 05:40:45 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.0060132995548463995 (base timeframe only)), final shape=(1929, 70)
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 997, 1: 932}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal quality: score=0.730, distribution={-1: 997, 1: 932}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Best parameters found: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI ✅ Best params saved to best_signal_params.json
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI ✅ Best signal parameters: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI 🔥 Processing splits with NEW feature engineering approach
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI [train] Processing 139417 rows from 15T
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI [train] Generating trading signals...
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI ✅ Loaded best params from best_signal_params.json: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using best params from JSON: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.003947481499860404, dynamic=False
+2025-09-25 05:40:45 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.003947481499860404 (base timeframe only)), final shape=(4087, 9)
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 2070, 1: 2017}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI Signal quality: score=0.742, distribution={-1: 2070, 1: 2017}
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI [train] Signals generated: 4087 rows
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI [train] Creating features with high TFs: ['1H']
+2025-09-25 05:40:45 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=139417, cols=6
+2025-09-25 05:40:47 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 05:40:47 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 05:41:22 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (139417, 67)
+2025-09-25 05:41:22 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 05:41:22 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=139417, after=139417 (dropped=0)
+2025-09-25 05:41:22 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [FE] final features: rows=139417, cols=67
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Features created: (139417, 67)
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Aligning features and signals...
+2025-09-25 05:41:22 [WARNING ] EnhancedScalpingAI ⚠️  Found 135 NaN values in signal_encoded
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for train
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Alignment successful: 139417 rows
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Cleaned signals: 139282/139417 rows retained
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 139282 rows
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {0.0: 93392, 1.0: 45890}
+2025-09-25 05:41:22 [WARNING ] EnhancedScalpingAI [train] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Final features shape: (139282, 73)
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [train] Final dataset: 139282 samples, 73 features
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [valid] Processing 15491 rows from 15T
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [valid] Generating trading signals...
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI ✅ Loaded best params from best_signal_params.json: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI Using best params from JSON: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.003947481499860404, dynamic=False
+2025-09-25 05:41:22 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.003947481499860404 (base timeframe only)), final shape=(5, 9)
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 5}
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI Signal quality: score=0.480, distribution={1: 5}
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [valid] Signals generated: 5 rows
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [valid] Creating features with high TFs: ['1H']
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=15491, cols=6
+2025-09-25 05:41:22 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 05:41:22 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 05:41:26 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (15491, 67)
+2025-09-25 05:41:26 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 05:41:26 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=15491, after=15491 (dropped=0)
+2025-09-25 05:41:26 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [FE] final features: rows=15491, cols=67
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Features created: (15491, 67)
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Aligning features and signals...
+2025-09-25 05:41:26 [WARNING ] EnhancedScalpingAI ⚠️  Found 10929 NaN values in signal_encoded
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for valid
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Alignment successful: 15491 rows
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Cleaned signals: 4562/15491 rows retained
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 4562 rows
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {1.0: 4562}
+2025-09-25 05:41:26 [WARNING ] EnhancedScalpingAI [valid] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Final features shape: (4562, 73)
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [valid] Final dataset: 4562 samples, 73 features
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [test] Processing 38728 rows from 15T
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [test] Generating trading signals...
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI ✅ Loaded best params from best_signal_params.json: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI Using best params from JSON: {'future_bars': 4, 'threshold': 0.003947481499860404, 'dynamic_threshold': False}
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.003947481499860404, dynamic=False
+2025-09-25 05:41:26 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=static=0.003947481499860404 (base timeframe only)), final shape=(43, 9)
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 23, -1: 20}
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI Signal quality: score=0.711, distribution={1: 23, -1: 20}
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [test] Signals generated: 43 rows
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [test] Creating features with high TFs: ['1H']
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=38728, cols=6
+2025-09-25 05:41:26 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 05:41:26 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 05:41:36 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (38728, 67)
+2025-09-25 05:41:36 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 05:41:36 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=38728, after=38728 (dropped=0)
+2025-09-25 05:41:36 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [FE] final features: rows=38728, cols=67
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Features created: (38728, 67)
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Aligning features and signals...
+2025-09-25 05:41:36 [WARNING ] EnhancedScalpingAI ⚠️  Found 1773 NaN values in signal_encoded
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for test
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Alignment successful: 38728 rows
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Cleaned signals: 36955/38728 rows retained
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 36955 rows
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {0.0: 25485, 1.0: 11470}
+2025-09-25 05:41:36 [WARNING ] EnhancedScalpingAI [test] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Final features shape: (36955, 73)
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI [test] Final dataset: 36955 samples, 73 features
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI 🎯 FINAL DATA SUMMARY:
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI 📊 Training: 139282 samples, 73 features
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI 📊 Validation: 4562 samples
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI 📊 Test: 36955 samples
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI 🎯 Training target distribution: {0.0: 93392, 1.0: 45890}
+2025-09-25 05:41:36 [INFO    ] EnhancedScalpingAI PHASE 6: Training
+2025-09-25 05:41:37 [WARNING ] EnhancedScalpingAI [train] Removing non-numeric columns: ['datetime']
+2025-09-25 05:41:37 [WARNING ] EnhancedScalpingAI [valid] Removing non-numeric columns: ['datetime']
+2025-09-25 05:41:37 [WARNING ] EnhancedScalpingAI [test] Removing non-numeric columns: ['datetime']
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 🎯 TRAINING DATA OVERVIEW:
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 📊 Samples: 139282
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 📊 Features: 72
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 📊 Task type: binary
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 📊 Original labels: [0.0, 1.0]
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 📊 Label distribution: {0.0: 93392, 1.0: 45890}
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 📊 Numeric features: 72
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI Loaded best_params from /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_best_params.json
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 🎛️ TUNING CONFIGURATION:
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI    - Tuning enabled: True
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI    - Number of trials: 50
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI    - Objective metric: profit_weighted_accuracy
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 🔍 Starting LightGBM tuning...
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI Starting LightGBM tuning...
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI [LightGBM] [Warning] There are no meaningful features which satisfy the provided configuration. Decreasing Dataset parameters min_data_in_bin or min_data_in_leaf and re-constructing Dataset might resolve this warning.
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Number of positive: 1, number of negative: 1
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] This is the GPU trainer!!
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Total Bins 0
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Number of data points in the train set: 2, number of used features: 0
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:41:37 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:42:35 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+2025-09-25 05:42:35 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:42:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:43:05 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:43:05 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:43:39 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:43:39 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:44:46 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:44:46 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:45:13 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+2025-09-25 05:45:13 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:45:13 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:46:07 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+2025-09-25 05:46:07 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:46:07 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:46:34 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:46:34 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:46:59 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:46:59 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:48:40 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:48:40 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:51:47 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:51:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:54:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:54:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:57:09 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:57:09 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 05:59:23 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 05:59:23 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:00:30 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:00:30 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:01:24 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:01:24 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:02:44 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:02:44 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:03:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:03:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:07:40 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:07:40 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:10:11 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:10:11 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:11:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+2025-09-25 06:11:38 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:11:38 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:13:07 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:13:07 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:15:33 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:15:33 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:18:21 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:18:21 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:20:57 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:20:57 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:22:45 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:22:45 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:25:55 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:25:55 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:27:22 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:27:22 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:29:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 due to no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+2025-09-25 06:29:36 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:29:36 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:32:23 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:32:23 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:33:51 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:33:51 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:36:18 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:36:18 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:38:39 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:38:39 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:40:26 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:40:26 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:42:58 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:42:58 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:44:51 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:44:51 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 06:47:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 06:47:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning

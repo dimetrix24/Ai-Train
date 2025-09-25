@@ -1,0 +1,26 @@
+2025-09-04 19:35:09 [INFO    ] ================================================================================
+2025-09-04 19:35:10 [INFO    ] ENHANCED SCALPING AI TRAINER
+2025-09-04 19:35:10 [INFO    ] ================================================================================
+2025-09-04 19:35:10 [INFO    ] PHASE 1: DATA LOADING
+2025-09-04 19:35:10 [INFO    ] Found 1 CSV files
+2025-09-04 19:35:10 [INFO    ] Processing file 1/1: EURUSD_M15.csv
+2025-09-04 19:35:10 [INFO    ] Loading file: EURUSD_M15.csv
+2025-09-04 19:35:10 [DEBUG   ] Successfully read with encoding: utf-8
+2025-09-04 19:35:10 [DEBUG   ] Successfully parsed with separator: ','
+2025-09-04 19:35:10 [INFO    ] Successfully loaded 100000 rows from EURUSD_M15.csv
+2025-09-04 19:35:10 [INFO    ] ✓ Added 100000 rows
+2025-09-04 19:35:10 [INFO    ] Resampled data: 100000 bars (from 2021-09-02 05:15:00+00:00 to 2025-09-04 05:45:00+00:00)
+2025-09-04 19:35:10 [INFO    ] 
+PHASE 2: FEATURE ENGINEERING
+2025-09-04 19:35:10 [INFO    ] Adding momentum indicators...
+2025-09-04 19:35:10 [INFO    ] Adding trend indicators...
+2025-09-04 19:35:10 [INFO    ] Adding volatility indicators...
+2025-09-04 19:35:10 [INFO    ] Adding MACD...
+2025-09-04 19:35:10 [INFO    ] Adding Stochastic...
+2025-09-04 19:35:11 [INFO    ] Adding ATR and price action features...
+2025-09-04 19:35:11 [INFO    ] Adding additional features...
+2025-09-04 19:35:11 [INFO    ] Dropped 49 rows with NaN values
+2025-09-04 19:35:11 [INFO    ] Final dataset with indicators: (99951, 33)
+2025-09-04 19:35:11 [INFO    ] 
+PHASE 3: SIGNAL GENERATION
+2025-09-04 19:35:11 [ERROR   ] Training pipeline failed: type object 'Config' has no attribute 'PROFIT_THRESHOLD'

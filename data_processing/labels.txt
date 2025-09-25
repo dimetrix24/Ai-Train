@@ -1,0 +1,70 @@
+# labels.py (sinkron dengan logger.py)
+"""
+Legacy / simple label maker adapted to pipeline:
+- expects DataFrame with column 'Close' (capital C)
+- outputs columns: 'future_price', 'signal', 'signal_encoded'
+- modes: "binary" (Sell/Buy) or "triple" (-1,0,1)
+"""
+
+from typing import Optional
+import pandas as pd
+import numpy as np
+import logging
+from utils.logger import get_logger
+
+
+def make_labels(
+    df: pd.DataFrame,
+    future_bars: int = 6,
+    mode: str = "binary",
+    logger: Optional[logging.Logger] = None,
+) -> Optional[pd.DataFrame]:
+    logger = logger or get_logger()
+
+    if df is None or df.empty:
+        logger.warning("make_labels: received empty DataFrame")
+        return df
+
+    df = df.copy()
+
+    # try common column names for closing price
+    if "Close" in df.columns:
+        close_col = "Close"
+    elif "close" in df.columns:
+        close_col = "close"
+    else:
+        logger.error("make_labels: dataframe must contain 'Close' or 'close' column")
+        raise ValueError("make_labels: dataframe must contain 'Close' or 'close' column")
+
+    # compute future price and future return
+    df["future_price"] = df[close_col].shift(-future_bars)
+    df["future_return"] = df["future_price"] / df[close_col] - 1.0
+
+    if mode == "binary":
+        df["signal"] = (df["future_price"] > df[close_col]).map({True: 1, False: -1})
+        df["signal_encoded"] = df["signal"].map({-1: 0, 1: 1})
+        logger.info(f"make_labels: generated binary labels (future_bars={future_bars})")
+    elif mode == "triple":
+        vol = df[close_col].pct_change().rolling(
+            window=max(20, future_bars * 3), min_periods=1
+        ).std()
+        thr = vol.fillna(vol.median()).replace(0, 1e-6)
+        df["signal"] = 0
+        df.loc[df["future_return"] > thr, "signal"] = 1
+        df.loc[df["future_return"] < -thr, "signal"] = -1
+        df["signal_encoded"] = df["signal"].map({-1: 0, 0: 1, 1: 2})
+        logger.info(f"make_labels: generated triple labels (future_bars={future_bars})")
+    else:
+        logger.error(f"make_labels: unknown mode {mode}")
+        raise ValueError(f"Unknown mode {mode} for make_labels")
+
+    before = len(df)
+    df = df.dropna(subset=["future_price", "signal", "signal_encoded"])
+    after = len(df)
+    if after < before:
+        logger.info(f"make_labels: dropped {before - after} rows with NaN labels")
+
+    df = df.drop(columns=["future_return"], errors="ignore")
+
+    logger.info(f"make_labels: final dataset shape {df.shape}")
+    return df

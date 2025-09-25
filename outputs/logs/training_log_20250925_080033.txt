@@ -1,0 +1,1527 @@
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI Logger initialized. Dynamic log: /content/drive/MyDrive/ai_train/outputs/logs/training_log_20250925_080033.txt, Static log: /content/drive/MyDrive/ai_train/outputs/logs/train.log
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI === Starting EnhancedScalpingAI Pipeline ===
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI Arguments: {'data_dir': PosixPath('/content/drive/MyDrive/ai_train/data'), 'max_rows': None, 'session': 'all', 'main_tf': '15T', 'high_tf': ['1H'], 'high_tf_profile': None, 'signal_mode': 'binary', 'split_method': 'timeseries', 'imbalance_method': 'none', 'tune_signal': True, 'signal_trials': 50, 'signal_future_bars': None, 'signal_threshold': None, 'signal_dynamic': False, 'use_triple_barrier': False, 'trainer': 'ensemble', 'tune_ensemble': True, 'n_trials': 50}
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI Using high timeframes from CLI: ['1H']
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI Resolved high timeframes: ['1H']
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI Main timeframe: 15T
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI PHASE 1: Data loading (base timeframe only)
+2025-09-25 08:00:34 [INFO    ] EnhancedScalpingAI Found 1 CSV file: /content/drive/MyDrive/ai_train/data/EURUSD_M1.csv
+2025-09-25 08:00:35 [DEBUG   ] EnhancedScalpingAI Autodetected delimiter: '','' for EURUSD_M1.csv
+2025-09-25 08:00:35 [INFO    ] EnhancedScalpingAI Detected headerless 6-column format with delimiter='','': EURUSD_M1.csv
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI Cleaned market data: total=100000, removed_negative=0, removed_invalid=0, removed_nan=0, final=100000
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI Validating data format after parsing...
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI Data validation passed
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI Loaded data from /content/drive/MyDrive/ai_train/data/EURUSD_M1.csv with shape (100000, 6), columns=['datetime', 'open', 'high', 'low', 'close', 'volume']
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI Loaded base TF data: 15T, 100000 rows
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI High timeframes for resampling: ['1H']
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI [Base_TF] DataFrame validation passed: 100000 rows, 6 columns
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI PHASE 2: Session filtering
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI No session filter applied (using all data).
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI 📊 Session filtering: 100000 → 100000 rows (100.0% retained)
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI PHASE 3: Raw data splitting
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI 📊 Split results - Train: 72000, Valid: 8000, Test: 20000
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI PHASE 4: Feature engineering & signal generation
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI 🔧 Tuning signal parameters on TRAINING DATA ONLY
+2025-09-25 08:00:36 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=72000, cols=6
+2025-09-25 08:00:37 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 08:00:37 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 08:00:57 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (72000, 67)
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=72000, after=72000 (dropped=0)
+2025-09-25 08:00:57 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI [FE] final features: rows=72000, cols=67
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Starting enhanced signal parameter tuning...
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.007969454818643935, dynamic=True
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signals generated using future 9 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(51585, 70)
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 26276, -1: 25309}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal quality: score=0.739, distribution={1: 26276, -1: 25309}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00020511104188433984, dynamic=False
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=static=0.00020511104188433984 (base timeframe only)), final shape=(24016, 70)
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 12009, 1: 12007}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal quality: score=0.750, distribution={-1: 12009, 1: 12007}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0026070247583707684, dynamic=False
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signals generated using future 13 bars (mode=binary, threshold=static=0.0026070247583707684 (base timeframe only)), final shape=(138, 70)
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 76, -1: 62}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal quality: score=0.695, distribution={1: 76, -1: 62}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00026587543983272726, dynamic=False
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signals generated using future 17 bars (mode=binary, threshold=static=0.00026587543983272726 (base timeframe only)), final shape=(34276, 70)
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 17172, -1: 17104}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={1: 17172, -1: 17104}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0011207606211860567, dynamic=True
+2025-09-25 08:00:57 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signals generated using future 8 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(50365, 70)
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 25668, -1: 24697}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI Signal quality: score=0.739, distribution={1: 25668, -1: 24697}
+2025-09-25 08:00:57 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00019010245319870352, dynamic=False
+2025-09-25 08:00:58 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signals generated using future 14 bars (mode=binary, threshold=static=0.00019010245319870352 (base timeframe only)), final shape=(40623, 70)
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 20583, -1: 20040}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal quality: score=0.742, distribution={1: 20583, -1: 20040}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0037183641805732083, dynamic=False
+2025-09-25 08:00:58 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signals generated using future 11 bars (mode=binary, threshold=static=0.0037183641805732083 (base timeframe only)), final shape=(62, 70)
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 32, 1: 30}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal quality: score=0.731, distribution={-1: 32, 1: 30}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001238513729886094, dynamic=True
+2025-09-25 08:00:58 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signals generated using future 13 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(54497, 70)
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 27811, -1: 26686}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 27811, -1: 26686}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.007902619549708232, dynamic=True
+2025-09-25 08:00:58 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(42476, 70)
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 21523, -1: 20953}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal quality: score=0.742, distribution={1: 21523, -1: 20953}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001567993391672301, dynamic=True
+2025-09-25 08:00:58 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signals generated using future 8 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(50365, 70)
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 25668, -1: 24697}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal quality: score=0.739, distribution={1: 25668, -1: 24697}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005338943774556118, dynamic=False
+2025-09-25 08:00:58 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signals generated using future 3 bars (mode=binary, threshold=static=0.0005338943774556118 (base timeframe only)), final shape=(1841, 70)
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 930, 1: 911}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Signal quality: score=0.744, distribution={-1: 930, 1: 911}
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:58 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003924315174542538, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=static=0.0003924315174542538 (base timeframe only)), final shape=(24741, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 12408, -1: 12333}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.748, distribution={1: 12408, -1: 12333}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003492350306725822, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0003492350306725822 (base timeframe only)), final shape=(27300, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 13683, -1: 13617}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={1: 13683, -1: 13617}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0007140752145191473, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 16 bars (mode=binary, threshold=static=0.0007140752145191473 (base timeframe only)), final shape=(7904, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 4046, -1: 3858}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.736, distribution={1: 4046, -1: 3858}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0002687417496731489, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 6 bars (mode=binary, threshold=static=0.0002687417496731489 (base timeframe only)), final shape=(18859, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 9512, 1: 9347}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.745, distribution={-1: 9512, 1: 9347}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00010470707187800597, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 16 bars (mode=binary, threshold=static=0.00010470707187800597 (base timeframe only)), final shape=(54417, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 27634, -1: 26783}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.741, distribution={1: 27634, -1: 26783}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0011926043809515037, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 10 bars (mode=binary, threshold=static=0.0011926043809515037 (base timeframe only)), final shape=(928, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 466, -1: 462}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.747, distribution={1: 466, -1: 462}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0002646869874535219, dynamic=False
+2025-09-25 08:00:59 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signals generated using future 20 bars (mode=binary, threshold=static=0.0002646869874535219 (base timeframe only)), final shape=(36909, 70)
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 18572, -1: 18337}
+2025-09-25 08:00:59 [INFO    ] EnhancedScalpingAI Signal quality: score=0.746, distribution={1: 18572, -1: 18337}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0006694653933471387, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 6 bars (mode=binary, threshold=static=0.0006694653933471387 (base timeframe only)), final shape=(2570, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 1296, -1: 1274}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal quality: score=0.745, distribution={1: 1296, -1: 1274}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.002004617910720449, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 15 bars (mode=binary, threshold=static=0.002004617910720449 (base timeframe only)), final shape=(337, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 179, -1: 158}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal quality: score=0.715, distribution={1: 179, -1: 158}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00020134452130536533, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 17 bars (mode=binary, threshold=static=0.00020134452130536533 (base timeframe only)), final shape=(41619, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 20975, -1: 20644}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal quality: score=0.745, distribution={1: 20975, -1: 20644}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00038695061010483324, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.00038695061010483324 (base timeframe only)), final shape=(24322, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 12172, 1: 12150}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={-1: 12172, 1: 12150}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00044282293798383475, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 20 bars (mode=binary, threshold=static=0.00044282293798383475 (base timeframe only)), final shape=(22009, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 11038, -1: 10971}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal quality: score=0.748, distribution={1: 11038, -1: 10971}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00027331136632928455, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.00027331136632928455 (base timeframe only)), final shape=(34351, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 17213, -1: 17138}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={1: 17213, -1: 17138}
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001537282673425618, dynamic=False
+2025-09-25 08:01:00 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signals generated using future 12 bars (mode=binary, threshold=static=0.0001537282673425618 (base timeframe only)), final shape=(44120, 70)
+2025-09-25 08:01:00 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 22437, -1: 21683}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.740, distribution={1: 22437, -1: 21683}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0007290765334473672, dynamic=False
+2025-09-25 08:01:01 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signals generated using future 15 bars (mode=binary, threshold=static=0.0007290765334473672 (base timeframe only)), final shape=(7019, 70)
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 3612, -1: 3407}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.733, distribution={1: 3612, -1: 3407}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00023289782367019382, dynamic=True
+2025-09-25 08:01:01 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signals generated using future 5 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(45186, 70)
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 22952, -1: 22234}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.741, distribution={1: 22952, -1: 22234}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003635756689163373, dynamic=False
+2025-09-25 08:01:01 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0003635756689163373 (base timeframe only)), final shape=(26149, 70)
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 13094, -1: 13055}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={1: 13094, -1: 13055}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005407932454214865, dynamic=False
+2025-09-25 08:01:01 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=static=0.0005407932454214865 (base timeframe only)), final shape=(15832, 70)
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 7951, -1: 7881}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.747, distribution={1: 7951, -1: 7881}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003666993205238624, dynamic=True
+2025-09-25 08:01:01 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signals generated using future 9 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(51585, 70)
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 26276, -1: 25309}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.739, distribution={1: 26276, -1: 25309}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.001451495277294534, dynamic=False
+2025-09-25 08:01:01 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signals generated using future 7 bars (mode=binary, threshold=static=0.001451495277294534 (base timeframe only)), final shape=(298, 70)
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 168, -1: 130}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Signal quality: score=0.682, distribution={1: 168, -1: 130}
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:01 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00015735914962698553, dynamic=False
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 17 bars (mode=binary, threshold=static=0.00015735914962698553 (base timeframe only)), final shape=(47487, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 24042, -1: 23445}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.743, distribution={1: 24042, -1: 23445}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003103612815046073, dynamic=False
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0003103612815046073 (base timeframe only)), final shape=(30708, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 15355, 1: 15353}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.750, distribution={-1: 15355, 1: 15353}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00032614736785757404, dynamic=False
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.00032614736785757404 (base timeframe only)), final shape=(29277, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 14652, -1: 14625}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={1: 14652, -1: 14625}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0005264515322041247, dynamic=False
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 14 bars (mode=binary, threshold=static=0.0005264515322041247 (base timeframe only)), final shape=(12733, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 6395, -1: 6338}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.747, distribution={1: 6395, -1: 6338}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00030867472356706834, dynamic=False
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=static=0.00030867472356706834 (base timeframe only)), final shape=(31707, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 15873, -1: 15834}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.749, distribution={1: 15873, -1: 15834}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.000863077628352016, dynamic=False
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 16 bars (mode=binary, threshold=static=0.000863077628352016 (base timeframe only)), final shape=(4945, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 2593, -1: 2352}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.722, distribution={1: 2593, -1: 2352}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00020468644069161857, dynamic=True
+2025-09-25 08:01:02 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signals generated using future 12 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(53829, 70)
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 27442, -1: 26387}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 27442, -1: 26387}
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:02 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00012673279945856248, dynamic=False
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 14 bars (mode=binary, threshold=static=0.00012673279945856248 (base timeframe only)), final shape=(50162, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 25482, -1: 24680}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.741, distribution={1: 25482, -1: 24680}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0056419916323760255, dynamic=False
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 17 bars (mode=binary, threshold=static=0.0056419916323760255 (base timeframe only)), final shape=(35, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 27, -1: 8}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.539, distribution={1: 27, -1: 8}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00017547970375716163, dynamic=True
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 11 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(53230, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 27155, -1: 26075}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.738, distribution={1: 27155, -1: 26075}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0004897275638934248, dynamic=False
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=static=0.0004897275638934248 (base timeframe only)), final shape=(18475, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 9282, -1: 9193}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.747, distribution={1: 9282, -1: 9193}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003227121897450859, dynamic=False
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 20 bars (mode=binary, threshold=static=0.0003227121897450859 (base timeframe only)), final shape=(31319, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 15714, -1: 15605}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.748, distribution={1: 15714, -1: 15605}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0002927243409478386, dynamic=False
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=static=0.0002927243409478386 (base timeframe only)), final shape=(33292, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 16706, -1: 16586}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.748, distribution={1: 16706, -1: 16586}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00021782930374127538, dynamic=False
+2025-09-25 08:01:03 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.00021782930374127538 (base timeframe only)), final shape=(40473, 70)
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 20380, -1: 20093}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Signal quality: score=0.746, distribution={1: 20380, -1: 20093}
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:03 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00043356182197911477, dynamic=False
+2025-09-25 08:01:04 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signals generated using future 15 bars (mode=binary, threshold=static=0.00043356182197911477 (base timeframe only)), final shape=(18496, 70)
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 9288, -1: 9208}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal quality: score=0.747, distribution={1: 9288, -1: 9208}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0001309733246392013, dynamic=False
+2025-09-25 08:01:04 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0001309733246392013 (base timeframe only)), final shape=(51576, 70)
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 26124, -1: 25452}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal quality: score=0.742, distribution={1: 26124, -1: 25452}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00024071848540114038, dynamic=False
+2025-09-25 08:01:04 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signals generated using future 16 bars (mode=binary, threshold=static=0.00024071848540114038 (base timeframe only)), final shape=(36307, 70)
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 18260, -1: 18047}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal quality: score=0.747, distribution={1: 18260, -1: 18047}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0006290051478193458, dynamic=True
+2025-09-25 08:01:04 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signals generated using future 4 bars (mode=binary, threshold=dynamic volatility (base timeframe only)), final shape=(42476, 70)
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 21523, -1: 20953}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal quality: score=0.742, distribution={1: 21523, -1: 20953}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI No JSON params found, using config defaults
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.00030933427940468475, dynamic=False
+2025-09-25 08:01:04 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signals generated using future 19 bars (mode=binary, threshold=static=0.00030933427940468475 (base timeframe only)), final shape=(31651, 70)
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal distribution: {1: 15837, -1: 15814}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal quality: score=0.750, distribution={1: 15837, -1: 15814}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Best parameters found: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI ✅ Best params saved to best_signal_params.json
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI ✅ Best signal parameters: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI 🔥 Processing splits with NEW feature engineering approach
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI [train] Processing 72000 rows from 15T
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI [train] Generating trading signals...
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI ✅ Loaded best params from best_signal_params.json: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Using best params from JSON: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003103612815046073, dynamic=False
+2025-09-25 08:01:04 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0003103612815046073 (base timeframe only)), final shape=(30708, 9)
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 15355, 1: 15353}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI Signal quality: score=0.750, distribution={-1: 15355, 1: 15353}
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI [train] Signals generated: 30708 rows
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI [train] Creating features with high TFs: ['1H']
+2025-09-25 08:01:04 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=72000, cols=6
+2025-09-25 08:01:05 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 08:01:05 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 08:01:29 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (72000, 67)
+2025-09-25 08:01:29 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 08:01:29 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=72000, after=72000 (dropped=0)
+2025-09-25 08:01:29 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [FE] final features: rows=72000, cols=67
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Features created: (72000, 67)
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Aligning features and signals...
+2025-09-25 08:01:29 [WARNING ] EnhancedScalpingAI ⚠️  Found 6 NaN values in signal_encoded
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for train
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Alignment successful: 72000 rows
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Cleaned signals: 71994/72000 rows retained
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 71994 rows
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {1.0: 36160, 0.0: 35834}
+2025-09-25 08:01:29 [WARNING ] EnhancedScalpingAI [train] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Final features shape: (71994, 73)
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [train] Final dataset: 71994 samples, 73 features
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [valid] Processing 8000 rows from 15T
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [valid] Generating trading signals...
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI ✅ Loaded best params from best_signal_params.json: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI Using best params from JSON: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003103612815046073, dynamic=False
+2025-09-25 08:01:29 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0003103612815046073 (base timeframe only)), final shape=(2711, 9)
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 1459, 1: 1252}
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI Signal quality: score=0.707, distribution={-1: 1459, 1: 1252}
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [valid] Signals generated: 2711 rows
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [valid] Creating features with high TFs: ['1H']
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=8000, cols=6
+2025-09-25 08:01:29 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 08:01:29 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 08:01:32 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (8000, 67)
+2025-09-25 08:01:32 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 08:01:32 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=8000, after=8000 (dropped=0)
+2025-09-25 08:01:32 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [FE] final features: rows=8000, cols=67
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Features created: (8000, 67)
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Aligning features and signals...
+2025-09-25 08:01:32 [WARNING ] EnhancedScalpingAI ⚠️  Found 23 NaN values in signal_encoded
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for valid
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Alignment successful: 8000 rows
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Cleaned signals: 7977/8000 rows retained
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 7977 rows
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {0.0: 4138, 1.0: 3839}
+2025-09-25 08:01:32 [WARNING ] EnhancedScalpingAI [valid] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Final features shape: (7977, 73)
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [valid] Final dataset: 7977 samples, 73 features
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [test] Processing 20000 rows from 15T
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [test] Generating trading signals...
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI ✅ Loaded best params from best_signal_params.json: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI Using best params from JSON: {'future_bars': 18, 'threshold': 0.0003103612815046073, 'dynamic_threshold': False}
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI Using threshold labeling: threshold=0.0003103612815046073, dynamic=False
+2025-09-25 08:01:32 [WARNING ] EnhancedScalpingAI 🚨 Removing FUTURE LEAKAGE columns: ['future_return']
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI Signals generated using future 18 bars (mode=binary, threshold=static=0.0003103612815046073 (base timeframe only)), final shape=(7110, 9)
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI Signal distribution: {-1: 3717, 1: 3393}
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI Signal quality: score=0.724, distribution={-1: 3717, 1: 3393}
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [test] Signals generated: 7110 rows
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [test] Creating features with high TFs: ['1H']
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI [FE] start create_features: rows=20000, cols=6
+2025-09-25 08:01:32 [INFO    ] EnhancedScalpingAI ✅ Added scaled indicators for 1H (ratio=4)
+2025-09-25 08:01:32 [INFO    ] data_processing.non_standard_features === Generating Non-Standard Features (Polars Hybrid) ===
+2025-09-25 08:01:37 [INFO    ] data_processing.non_standard_features Non-standard features added. Shape: (20000, 67)
+2025-09-25 08:01:37 [WARNING ] EnhancedScalpingAI Market regime detection failed: 'FeatureEngineering' object has no attribute '_detect_market_regime_series_quantile'
+2025-09-25 08:01:37 [WARNING ] EnhancedScalpingAI [FE] Removing non-numeric columns (non-essential): ['datetime']
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [HandleMissing] Rows before=20000, after=20000 (dropped=0)
+2025-09-25 08:01:37 [DEBUG   ] EnhancedScalpingAI [HandleMissing] Top NaN columns:
+sma_200_1H          200
+price_to_sma_200    200
+sma_200             200
+macd_diff_1H        139
+macd_signal_1H      139
+macd_1H             104
+fib_high             99
+fib_382              99
+fib_786              99
+fib_618              99
+dtype: int64
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [FE] final features: rows=20000, cols=67
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Features created: (20000, 67)
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Using base_df column 'datetime' to restore datetime in features
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Aligning features and signals...
+2025-09-25 08:01:37 [WARNING ] EnhancedScalpingAI ⚠️  Found 3 NaN values in signal_encoded
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI ✅ Alignment validation passed for test
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Alignment successful: 20000 rows
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Cleaned signals: 19997/20000 rows retained
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI ✅ Extracted features: 75 columns, 19997 rows
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI ✅ Target distribution: {0.0: 10191, 1.0: 9806}
+2025-09-25 08:01:37 [WARNING ] EnhancedScalpingAI [test] ⚠️ Dropped leakage-like columns: ['signal', 'signal_encoded']
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Final features shape: (19997, 73)
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI [test] Final dataset: 19997 samples, 73 features
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI 🎯 FINAL DATA SUMMARY:
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI 📊 Training: 71994 samples, 73 features
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI 📊 Validation: 7977 samples
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI 📊 Test: 19997 samples
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI 🎯 Training target distribution: {1.0: 36160, 0.0: 35834}
+2025-09-25 08:01:37 [INFO    ] EnhancedScalpingAI PHASE 6: Training
+2025-09-25 08:01:38 [WARNING ] EnhancedScalpingAI [train] Removing non-numeric columns: ['datetime']
+2025-09-25 08:01:38 [WARNING ] EnhancedScalpingAI [valid] Removing non-numeric columns: ['datetime']
+2025-09-25 08:01:38 [WARNING ] EnhancedScalpingAI [test] Removing non-numeric columns: ['datetime']
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 🎯 TRAINING DATA OVERVIEW:
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 📊 Samples: 71994
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 📊 Features: 72
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 📊 Task type: binary
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 📊 Original labels: [0.0, 1.0]
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 📊 Label distribution: {1.0: 36160, 0.0: 35834}
+2025-09-25 08:01:38 [INFO    ] EnhancedScalpingAI 📊 Numeric features: 72
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI Loaded best_params from /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_best_params.json
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI 🎛️ TUNING CONFIGURATION:
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI    - Tuning enabled: True
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI    - Number of trials: 50
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI    - Objective metric: profit_weighted_accuracy
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI 🔍 Starting LightGBM tuning...
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI Starting LightGBM tuning...
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI [LightGBM] [Warning] There are no meaningful features which satisfy the provided configuration. Decreasing Dataset parameters min_data_in_bin or min_data_in_leaf and re-constructing Dataset might resolve this warning.
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Number of positive: 1, number of negative: 1
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] This is the GPU trainer!!
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Total Bins 0
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI [LightGBM] [Info] Number of data points in the train set: 2, number of used features: 0
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:01:39 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:02:25 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:02:25 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:03:41 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:03:41 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:06:00 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:06:00 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:06:27 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:06:27 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:07:14 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:07:14 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:07:33 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:07:33 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:07:48 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:07:48 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:08:19 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:08:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:08:38 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:08:38 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:09:01 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:09:01 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:09:19 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:09:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:09:39 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:09:39 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:09:59 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:09:59 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:10:21 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:10:21 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:10:47 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:10:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:10:59 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:10:59 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:11:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:11:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:11:51 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:11:51 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:12:10 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:12:10 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:12:38 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:12:38 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:12:56 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:12:56 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:13:23 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:13:23 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:13:51 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:13:51 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:14:17 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:14:17 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:14:30 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:14:30 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:14:55 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:14:55 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:15:07 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:15:07 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:15:21 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:15:21 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:15:58 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:15:58 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:17:00 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:17:00 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:17:24 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:17:24 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:17:47 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:17:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:18:04 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:18:04 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:18:41 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:18:41 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:19:09 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:19:09 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:19:52 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:19:52 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:20:32 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:20:32 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:20:47 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:20:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:21:41 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:21:41 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:22:16 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:22:16 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:22:49 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:22:49 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:22:56 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:22:56 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:10 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:10 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:20 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:20 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:35 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:44 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:44 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:49 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:49 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:23:58 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:23:58 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for LightGBM tuning
+2025-09-25 08:24:03 [INFO    ] EnhancedScalpingAI Optuna best_value=0.6437, best_params={'max_depth': 3, 'n_estimators': 202, 'num_leaves': 31, 'colsample_bytree': 0.5206537128456118, 'learning_rate': 0.008779998615516076, 'subsample': 0.8354542812394637, 'bagging_freq': 7, 'min_child_samples': 1, 'reg_alpha': 6.234660705922663e-06, 'reg_lambda': 2.6358196367936872e-05, 'min_data_in_bin': 185, 'min_data_in_leaf': 1}
+2025-09-25 08:24:03 [INFO    ] EnhancedScalpingAI Saved best_params to /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_best_params.json
+2025-09-25 08:24:03 [INFO    ] EnhancedScalpingAI 🔍 Starting XGBoost tuning...
+2025-09-25 08:24:03 [INFO    ] EnhancedScalpingAI Starting XGBoost tuning...
+2025-09-25 08:24:03 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:24:03 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:24:03 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:03] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:03 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:03] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:06] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:06] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:12 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:24:12 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:24:12 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:12] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:12 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:12] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:21 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:21] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:21 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:21] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:35 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:24:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:24:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:36] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:36] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:43 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:43] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:43 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:43] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:54 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:24:54 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:24:54 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:54] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:24:54 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:24:54] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:25:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:25:02] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:25:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:25:02] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:25:15 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:25:15 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:25:16 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:25:16] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:25:16 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:25:16] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:25:40 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:25:40] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:25:40 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:25:40] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:26:15 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:26:15 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:26:16 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:26:16] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:26:16 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:26:16] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:26:29 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:26:29] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:26:29 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:26:29] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:26:46 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:26:46 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:26:47 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:26:47] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:26:47 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:26:47] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:27:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:27:02] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:27:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:27:02] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:27:26 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:27:26 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:27:26 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:27:26] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:27:26 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:27:26] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:27:52 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:27:52] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:27:52 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:27:52] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:28:37 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:28:37 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:28:37 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:28:37] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:28:37 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:28:37] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:29:07 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:29:07] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:29:07 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:29:07] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:29:57 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:29:57 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:29:58 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:29:58] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:29:58 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:29:58] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:30:12 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:30:12] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:30:12 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:30:12] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:30:33 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:30:33 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:30:34 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:30:34] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:30:34 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:30:34] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:30:53 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:30:53] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:30:53 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:30:53] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:24 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:31:24 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:31:24 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:24] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:24 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:24] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:34 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:34] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:34 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:34] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:45 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:31:45 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:31:45 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:45] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:45 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:45] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:51 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:51] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:31:51 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:31:51] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:01 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:32:01 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:32:01 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:01] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:01 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:01] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:08 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:08] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:08 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:08] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:19 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:32:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:32:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:19] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:19] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:31 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:31] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:31 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:31] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:45 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:32:45 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:32:45 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:45] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:45 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:45] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:55 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:55] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:32:55 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:32:55] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:33:07 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:33:07 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:33:07 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:33:07] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:33:07 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:33:07] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:33:27 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:33:27] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:33:27 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:33:27] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:33:54 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:33:54 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:33:55 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:33:55] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:33:55 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:33:55] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:03 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:03] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:03 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:03] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:10 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:34:10 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:34:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:11] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:11] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:18 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:18] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:18 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:18] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:28 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:34:28 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:34:29 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:29] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:29 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:29] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:42 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:42] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:34:42 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:34:42] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:03 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:35:03 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:35:03 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:03] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:03 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:03] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:11] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:11] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:19 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:35:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:35:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:19] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:19] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:27 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:27] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:27 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:27] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:37 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:35:37 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:35:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:38] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:38] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:43 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:43] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:43 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:43] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:54 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:35:54 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:35:54 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:54] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:54 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:54] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:58 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:58] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:35:58 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:35:58] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:06 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:36:06 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:36:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:06] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:06] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:10 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:10] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:10 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:10] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:14 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:36:14 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:36:15 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:15] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:15 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:15] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:26 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:26] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:26 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:26] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:47 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:36:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:36:48 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:48] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:48 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:48] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:52 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:52] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:36:52 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:36:52] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:01 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:37:01 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:37:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:02] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:02] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:13 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:13] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:13 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:13] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:30 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:37:30 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:37:31 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:31] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:31 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:31] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:34 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:34] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:34 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:34] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:40 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:37:40 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:37:41 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:41] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:41 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:41] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:53 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:53] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:37:53 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:37:53] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:18 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:38:18 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:38:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:19] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:19] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:24 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:24] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:24 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:24] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:28 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:38:28 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:38:28 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:28] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:28 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:28] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:37 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:37] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:37 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:37] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:45 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:38:45 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:38:46 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:46] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:46 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:46] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:52 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:52] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:52 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:52] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:58 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:38:58 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:38:59 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:59] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:38:59 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:38:59] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:05 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:05] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:05 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:05] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:10 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:39:10 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:39:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:11] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:11] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:21 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:21] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:21 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:21] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:35 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:39:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:39:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:36] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:36] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:49 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:49] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:39:49 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:39:49] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:06 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:40:06 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:40:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:06] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:06] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:11] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:11] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:19 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:40:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:40:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:19] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:19 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:19] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:28 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:28] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:28 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:28] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:37 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:40:37 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:40:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:38] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:38] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:46 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:46] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:46 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:46] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:57 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:40:57 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:40:57 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:57] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:40:57 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:40:57] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:02] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:02 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:02] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:10 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:41:10 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:41:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:11] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:11] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:16 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:16] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:16 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:16] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:25 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:41:25 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:41:26 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:26] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:26 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:26] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:30 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:30] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:30 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:30] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:39 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:41:39 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:41:39 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:39] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:39 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:39] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:44 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:44] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:44 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:44] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:54 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:41:54 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:41:54 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:54] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:54 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:54] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:59 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:59] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:41:59 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:41:59] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:08 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:42:08 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:42:09 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:09] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:09 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:09] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:18 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:18] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:18 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:18] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:35 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:42:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:42:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:36] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:36 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:36] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:45 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:45] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:42:45 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:42:45] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:00 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:43:00 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:43:01 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:01] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:01 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:01] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:08 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:08] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:08 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:08] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:20 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:43:20 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:43:20 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:20] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:20 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:20] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:46 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:46] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:43:46 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:43:46] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:44:21 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:44:21 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:44:22 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:44:22] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:44:22 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:44:22] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:44:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:44:38] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:44:38 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:44:38] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:45:06 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:45:06 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for XGBoost tuning
+2025-09-25 08:45:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:45:06] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:45:06 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:45:06] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:45:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:45:11] WARNING: /workspace/src/context.cc:49: No visible GPU is found, setting device to CPU.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:45:11 [WARNING ] py.warnings  /usr/local/lib/python3.12/dist-packages/xgboost/training.py:183: UserWarning: [08:45:11] WARNING: /workspace/src/context.cc:203: XGBoost is not compiled with CUDA support.
+  bst.update(dtrain, iteration=i, fobj=obj)
+
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI Optuna best_value=0.6434, best_params={'max_depth': 6, 'n_estimators': 170, 'learning_rate': 0.002985012585992633, 'min_child_weight': 14, 'subsample': 0.7760764349833439, 'colsample_bytree': 0.5471584473497964, 'gamma': 2.2551272670505165e-08, 'reg_alpha': 0.9815663396045149, 'reg_lambda': 1.6543081453264427e-06, 'min_split_loss': 3.788518252976782, 'scale_pos_weight': 1.4678305047794575}
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI Saved best_params to /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_best_params.json
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI 🔍 Tuning ensemble weights...
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI Starting ensemble weights tuning...
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:45:18 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:45:46 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:45:46 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:45:46 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:46:07 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:46:07 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:46:07 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:46:32 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:46:32 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:46:32 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:46:52 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:46:52 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:46:52 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:47:15 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:47:15 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:47:15 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:47:36 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:47:36 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:47:36 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:47:57 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:47:57 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:47:57 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:48:18 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:48:18 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:48:18 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:48:40 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:48:40 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:48:40 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:49:01 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:49:01 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:49:01 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:49:23 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:49:23 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:49:23 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:49:43 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:49:43 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:49:43 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:50:05 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:50:05 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:50:05 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:50:25 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:50:25 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:50:25 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:50:47 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:50:47 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:50:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:51:07 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:51:07 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:51:07 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:51:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:51:29 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:51:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:51:49 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:51:49 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:51:49 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:52:11 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:52:11 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:52:11 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:52:32 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:52:32 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:52:32 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:52:53 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:52:53 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:52:53 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:53:13 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:53:13 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:53:13 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:53:35 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:53:35 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:53:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:53:55 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:53:55 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:53:55 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:54:16 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:54:16 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:54:16 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:54:37 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:54:37 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:54:37 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:54:59 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:54:59 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:54:59 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:55:19 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:55:19 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:55:19 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:55:41 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:55:41 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:55:41 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:56:01 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:56:01 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:56:01 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:56:23 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:56:23 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:56:23 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:56:43 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:56:43 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:56:43 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:57:05 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:57:05 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:57:05 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:57:25 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:57:25 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:57:25 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:57:47 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:57:47 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:57:47 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:58:08 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:58:08 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:58:08 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:58:29 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:58:29 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:58:29 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:58:49 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:58:49 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:58:49 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:59:11 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:59:11 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:59:11 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:59:32 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:59:32 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:59:32 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 08:59:54 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 08:59:54 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 08:59:54 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:00:14 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:00:14 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:00:14 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:00:35 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:00:35 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:00:35 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:00:56 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:00:56 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:00:56 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:01:18 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:01:18 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:01:18 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:01:38 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:01:38 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:01:38 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:02:00 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:02:00 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:02:00 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:02:20 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:02:20 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:02:20 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:02:42 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:02:42 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:02:42 [INFO    ] EnhancedScalpingAI 🎯 Using profit_weighted_accuracy as objective metric for ensemble weights tuning
+2025-09-25 09:03:02 [INFO    ] EnhancedScalpingAI Optuna best_value=0.6445, best_params={'w1': 4.145243034213534, 'w2': 1.6847968496935475}
+2025-09-25 09:03:02 [INFO    ] EnhancedScalpingAI Best ensemble weights found: [4.145243034213534, 1.6847968496935475]
+2025-09-25 09:03:02 [INFO    ] EnhancedScalpingAI Saved best_params to /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_best_params.json
+2025-09-25 09:03:02 [INFO    ] EnhancedScalpingAI LightGBM: GPU not available → using CPU
+2025-09-25 09:03:02 [INFO    ] EnhancedScalpingAI XGBoost: CUDA available → using GPU
+2025-09-25 09:03:02 [INFO    ] EnhancedScalpingAI 🏋️ Training started...
+2025-09-25 09:03:20 [INFO    ] EnhancedScalpingAI ✅ Training finished in 18.55 seconds
+2025-09-25 09:03:20 [INFO    ] EnhancedScalpingAI 📈 Running comprehensive in-sample evaluation...
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 🎯 COMPREHENSIVE TRAINING RESULTS:
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 📊 CORE ACCURACY METRICS:
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Accuracy: 0.6549
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Balanced Accuracy: 0.6549
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 📊 TRADING-AWARE METRICS:
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Profit-Weighted Accuracy: 0.6549
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - High-Confidence Accuracy: 0.7549
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Win Rate: 0.6549
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 📊 CLASSIFICATION METRICS:
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - F1: 0.6571
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Precision: 0.6558
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Recall: 0.6585
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - AUC: 0.7165
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 📊 RISK METRICS:
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Max Drawdown: -4.0000
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Simulated Profit Factor: 1.90
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - Average Confidence: 0.5934
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 📊 DETAILED CLASSIFICATION REPORT:
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI               precision    recall  f1-score   support
+
+         0.0     0.6539    0.6512    0.6526     35834
+         1.0     0.6558    0.6585    0.6571     36160
+
+    accuracy                         0.6549     71994
+   macro avg     0.6549    0.6549    0.6549     71994
+weighted avg     0.6549    0.6549    0.6549     71994
+
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 🏆 TOP 10 FEATURES (LightGBM):
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - low_y: 8039.6726
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - stoch_k_1H: 8838.1058
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - price_to_sma_20: 9168.7529
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - price_to_sma_50: 9943.8607
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - price_to_ema_50: 11806.1539
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - atr: 15519.8927
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - volume_y: 18533.4798
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - atr_1H: 20846.1844
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - price_to_ema_10: 48636.9908
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI    - price_to_ema_20: 198694.1610
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI 💾 Model improvement check based on profit_weighted_accuracy=0.6549
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Model saved to /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary.pkl (metric profit_weighted_accuracy=0.6549)
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI FE bundle saved to /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_fe.json
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Score saved to /content/drive/MyDrive/ai_train/outputs/models/ensemble_binary_score.json
+2025-09-25 09:03:22 [ERROR   ] EnhancedScalpingAI onnx_utils belum tersedia. Install dulu dependency skl2onnx, onnxmltools, onnxruntime.
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI PHASE 7: Evaluation
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Inference completed in 0.398 seconds
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Class distribution: {0.0: 10191, 1.0: 9806}
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Prediction distribution: {np.int64(1): 9938, np.int64(0): 10059}
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Confusion matrix:
+[[6811 3380]
+ [3248 6558]]
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Accuracy: 0.6686, F1: 0.6643, AUC: 0.7192622841320018
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Trading metrics: {'win_rate': 0.6685502825423814, 'profit_factor': 1.0000000000000002, 'sharpe_ratio': 5.683997652436824, 'max_drawdown': -0.09099999999998998}
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI === Pipeline Completed Successfully ===
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Final Results: {'accuracy': 0.6685502825423814, 'f1': 0.6643030794165316, 'auc': np.float64(0.7192622841320018), 'auc_per_class': None, 'class_distribution': {0.0: 10191, 1.0: 9806}, 'pred_distribution': {np.int64(1): 9938, np.int64(0): 10059}, 'confusion_matrix': [[6811, 3380], [3248, 6558]], 'n_classes': 2, 'task_type': 'binary', 'win_rate': 0.6685502825423814, 'profit_factor': 1.0000000000000002, 'sharpe_ratio': 5.683997652436824, 'max_drawdown': -0.09099999999998998}
+2025-09-25 09:03:22 [INFO    ] EnhancedScalpingAI Pipeline completed successfully!

@@ -1,0 +1,1 @@
+touch /content/drive/MyDrive/ai_train/__init__.py

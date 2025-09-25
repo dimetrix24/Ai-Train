@@ -1,0 +1,64 @@
+2025-09-04 19:59:57 [INFO    ] ================================================================================
+2025-09-04 19:59:57 [INFO    ] ENHANCED SCALPING AI TRAINER
+2025-09-04 19:59:57 [INFO    ] ================================================================================
+2025-09-04 19:59:57 [INFO    ] PHASE 1: DATA LOADING
+2025-09-04 19:59:57 [INFO    ] Found 1 CSV files
+2025-09-04 19:59:57 [INFO    ] Processing file 1/1: EURUSD_M15.csv
+2025-09-04 19:59:57 [INFO    ] Loading file: EURUSD_M15.csv
+2025-09-04 19:59:57 [DEBUG   ] Successfully read with encoding: utf-8
+2025-09-04 19:59:58 [DEBUG   ] Successfully parsed with separator: ','
+2025-09-04 19:59:58 [INFO    ] Successfully loaded 100000 rows from EURUSD_M15.csv
+2025-09-04 19:59:58 [INFO    ] ✓ Added 100000 rows
+2025-09-04 19:59:58 [INFO    ] Resampled data: 100000 bars (from 2021-09-02 05:15:00+00:00 to 2025-09-04 05:45:00+00:00)
+2025-09-04 19:59:58 [INFO    ] 
+PHASE 2: FEATURE ENGINEERING
+2025-09-04 19:59:58 [INFO    ] Adding momentum indicators...
+2025-09-04 19:59:58 [INFO    ] Adding trend indicators...
+2025-09-04 19:59:58 [INFO    ] Adding volatility indicators...
+2025-09-04 19:59:58 [INFO    ] Adding MACD...
+2025-09-04 19:59:58 [INFO    ] Adding Stochastic...
+2025-09-04 19:59:58 [INFO    ] Adding ATR and price action features...
+2025-09-04 19:59:58 [INFO    ] Adding additional features...
+2025-09-04 19:59:58 [INFO    ] Dropped 49 rows with NaN values
+2025-09-04 19:59:58 [INFO    ] Final dataset with indicators: (99951, 33)
+2025-09-04 19:59:58 [INFO    ] 
+PHASE 3: SIGNAL GENERATION
+2025-09-04 19:59:58 [INFO    ] Detecting outliers for 35 numeric columns...
+2025-09-04 19:59:58 [DEBUG   ] Removed 2098 outliers from column Volume
+2025-09-04 19:59:58 [DEBUG   ] Removed 175 outliers from column RSI
+2025-09-04 19:59:58 [DEBUG   ] Removed 1910 outliers from column BB_width
+2025-09-04 19:59:58 [DEBUG   ] Removed 1140 outliers from column MACD
+2025-09-04 19:59:58 [DEBUG   ] Removed 863 outliers from column MACD_signal
+2025-09-04 19:59:58 [DEBUG   ] Removed 1208 outliers from column MACD_hist
+2025-09-04 19:59:58 [DEBUG   ] Removed 1063 outliers from column ATR
+2025-09-04 19:59:58 [DEBUG   ] Removed 1390 outliers from column Price_change
+2025-09-04 19:59:58 [DEBUG   ] Removed 1119 outliers from column High_Low_ratio
+2025-09-04 19:59:58 [DEBUG   ] Removed 1321 outliers from column volatility_5
+2025-09-04 19:59:58 [DEBUG   ] Removed 1032 outliers from column volatility_20
+2025-09-04 19:59:58 [DEBUG   ] Removed 113 outliers from column RSI_MA
+2025-09-04 19:59:58 [DEBUG   ] Removed 816 outliers from column MACD_slope
+2025-09-04 19:59:58 [DEBUG   ] Removed 1118 outliers from column volume_ma_ratio
+2025-09-04 19:59:58 [DEBUG   ] Removed 204 outliers from column volume_zscore
+2025-09-04 19:59:58 [DEBUG   ] Removed 1930 outliers from column is_weekend
+2025-09-04 19:59:58 [INFO    ] Outlier detection completed. Final rows: 82448
+2025-09-04 19:59:58 [INFO    ] Signal distribution:
+2025-09-04 19:59:58 [INFO    ]   Sell (-1):    24905
+2025-09-04 19:59:58 [INFO    ]   Hold (0):     32428
+2025-09-04 19:59:58 [INFO    ]   Buy (1):      25115
+2025-09-04 19:59:58 [INFO    ] Encoded distribution (for XGBoost):
+2025-09-04 19:59:58 [INFO    ]   Class 0 (Sell):   24905
+2025-09-04 19:59:58 [INFO    ]   Class 1 (Hold):   32428
+2025-09-04 19:59:58 [INFO    ]   Class 2 (Buy):    25115
+2025-09-04 19:59:58 [INFO    ]   Total:            82448
+2025-09-04 19:59:58 [INFO    ] Class distribution percentages:
+2025-09-04 19:59:58 [INFO    ]   Sell:  30.21%
+2025-09-04 19:59:58 [INFO    ]   Hold:  39.33%
+2025-09-04 19:59:58 [INFO    ]   Buy:   30.46%
+2025-09-04 19:59:58 [INFO    ] 
+PHASE 4: MODEL TRAINING
+2025-09-04 19:59:58 [INFO    ] Available features: 28
+2025-09-04 19:59:58 [INFO    ] Training set: 65958 samples (2021-09-02 17:30:00+00:00 to 2024-11-06 19:45:00+00:00)
+2025-09-04 19:59:58 [INFO    ] Test set:     16490 samples (2024-11-06 20:00:00+00:00 to 2025-09-04 05:00:00+00:00)
+2025-09-04 19:59:58 [INFO    ] Balancing classes with SMOTE and undersampling...
+2025-09-04 20:00:05 [ERROR   ] Error during model training: With under-sampling methods, the number of samples in a class should be less or equal to the original number of samples. Originally, there is 25914 samples and 30000 samples are asked.
+2025-09-04 20:00:05 [ERROR   ] Training pipeline failed: Model training failed
