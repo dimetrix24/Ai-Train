@@ -21,7 +21,7 @@ class FeatureEngineering:
         self.fe_params = fe_params or {}
         self.logger = logger or logging.getLogger(__name__)
         self.config = Config()
-        self.nonstd = NonStandardFeatures(params=self.fe_params.get("nonstd_params", {}))
+        self.nonstd = NonStandardFeatures(params=self.fe_params)
 
     # ==================== TIMEFRAME HELPERS ====================
     def _timeframe_to_minutes(self, tf: str) -> int:
@@ -163,34 +163,34 @@ class FeatureEngineering:
         try:
             df = df.copy()
             
-            # SMA/EMA + Price-to-SMA/EMA (FIXED: No data leakage)
+            # SMA/EMA + Price-to-SMA/EMA
             for window in [10, 20, 50, 200]:
                 df[f"sma_{window}{suffix}"] = df["close"].shift(1).rolling(window).mean()
                 df[f"ema_{window}{suffix}"] = df["close"].shift(1).ewm(span=window, adjust=False).mean()
                 df[f"price_to_sma_{window}{suffix}"] = df["close"] / df[f"sma_{window}{suffix}"]
                 df[f"price_to_ema_{window}{suffix}"] = df["close"] / df[f"ema_{window}{suffix}"]
 
-            # RSI (FIXED: No data leakage)
+            # RSI
             df[f"rsi_14{suffix}"] = RSIIndicator(close=df["close"].shift(1), window=14).rsi()
 
-            # MACD (FIXED: No data leakage)
+            # MACD
             macd = MACD(close=df["close"].shift(1), window_slow=26, window_fast=12, window_sign=9)
             df[f"macd{suffix}"] = macd.macd()
             df[f"macd_signal{suffix}"] = macd.macd_signal()
             df[f"macd_diff{suffix}"] = macd.macd_diff()
 
-            # Bollinger Bands (FIXED: No data leakage)
+            # Bollinger Bands
             bb = BollingerBands(close=df["close"].shift(1), window=20, window_dev=2)
             df[f"bb_high{suffix}"] = bb.bollinger_hband()
             df[f"bb_low{suffix}"] = bb.bollinger_lband()
             df[f"bb_mavg{suffix}"] = bb.bollinger_mavg()
             df[f"bb_width{suffix}"] = bb.bollinger_wband()
 
-            # ATR (FIXED: No data leakage)
+            # ATR
             atr = AverageTrueRange(high=df["high"].shift(1), low=df["low"].shift(1), close=df["close"].shift(1), window=14)
             df[f"atr{suffix}"] = atr.average_true_range()
 
-            # Stochastic Oscillator (FIXED: No data leakage)
+            # Stochastic Oscillator
             stoch = StochasticOscillator(high=df["high"].shift(1), low=df["low"].shift(1), close=df["close"].shift(1), window=14, smooth_window=3)
             df[f"stoch_k{suffix}"] = stoch.stoch()
             df[f"stoch_d{suffix}"] = stoch.stoch_signal()
@@ -215,27 +215,22 @@ class FeatureEngineering:
                 df[f"sma_{window*ratio}{suffix}"] = df["close"].shift(1).rolling(window*ratio).mean()
                 df[f"ema_{window*ratio}{suffix}"] = df["close"].shift(1).ewm(span=window*ratio, adjust=False).mean()
             
-            # RSI with scaled window (FIXED: No data leakage)
             df[f"rsi_{14*ratio}{suffix}"] = RSIIndicator(close=df["close"].shift(1), window=14*ratio).rsi()
             
-            # MACD with scaled windows (FIXED: No data leakage)
             macd = MACD(close=df["close"].shift(1), window_slow=26*ratio, window_fast=12*ratio, window_sign=9*ratio)
             df[f"macd{suffix}"] = macd.macd()
             df[f"macd_signal{suffix}"] = macd.macd_signal()
             df[f"macd_diff{suffix}"] = macd.macd_diff()
             
-            # Bollinger Bands with scaled window (FIXED: No data leakage)
             bb = BollingerBands(close=df["close"].shift(1), window=20*ratio, window_dev=2)
             df[f"bb_high{suffix}"] = bb.bollinger_hband()
             df[f"bb_low{suffix}"] = bb.bollinger_lband()
             df[f"bb_mavg{suffix}"] = bb.bollinger_mavg()
             df[f"bb_width{suffix}"] = bb.bollinger_wband()
             
-            # ATR with scaled window (FIXED: No data leakage)
             atr = AverageTrueRange(high=df["high"].shift(1), low=df["low"].shift(1), close=df["close"].shift(1), window=14*ratio)
             df[f"atr{suffix}"] = atr.average_true_range()
             
-            # Stochastic with scaled window (FIXED: No data leakage)
             stoch = StochasticOscillator(high=df["high"].shift(1), low=df["low"].shift(1), close=df["close"].shift(1), window=14*ratio, smooth_window=3)
             df[f"stoch_k{suffix}"] = stoch.stoch()
             df[f"stoch_d{suffix}"] = stoch.stoch_signal()
@@ -254,15 +249,12 @@ class FeatureEngineering:
         df = df.copy()
         self.logger.info(f"[FE] start create_features: rows={len(df)}, cols={len(df.columns)}")
 
-        # Add base technical indicators
         df = self._technical_indicators(df)
         
-        # Add high timeframe scaled indicators if configured
         if high_timeframes and getattr(self.config, "use_scaled_high_tf", True):
             for tf in high_timeframes:
                 df = self._calculate_scaled_high_tf_indicators(df, tf)
 
-        # Add non-standard features
         try:
             df_nonstd = self.nonstd.add_features(df)
             if df_nonstd is not None:
@@ -270,9 +262,8 @@ class FeatureEngineering:
         except Exception as e:
             self.logger.warning(f"Non-standard features failed: {e}")
 
-        # Add market regime detection
         try:
-            regime_series = self._detect_market_regime_series_quantile(
+            regime_series = self._detect_market_regime_series(
                 df,
                 atr_col="atr",
                 bb_width_col="bb_width",
@@ -286,10 +277,69 @@ class FeatureEngineering:
             self.logger.warning(f"Market regime detection failed: {e}")
             df["market_regime"] = 0
 
-        # Final cleanup
         df = self._ensure_numeric_columns(df)
         df = self._handle_missing(df)
         df = self._remove_datetime_columns(df)
 
         self.logger.info(f"[FE] final features: rows={len(df)}, cols={len(df.columns)}")
         return df
+
+    # ==================== PARAMS SAVE/LOAD ====================
+    def save_params(self, path: str):
+        """Simpan parameter konfigurasi FeatureEngineering ke JSON (config + fe_params)."""
+        import os, json
+        from pathlib import Path
+
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+
+        # Helper untuk konversi PosixPath / object lain agar JSON-safe
+        def _make_json_safe(obj):
+            if isinstance(obj, dict):
+                return {k: _make_json_safe(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [_make_json_safe(v) for v in obj]
+            elif isinstance(obj, (str, int, float, bool)) or obj is None:
+                return obj
+            elif isinstance(obj, Path):
+                return str(obj)  # konversi PosixPath ke string
+            else:
+                return str(obj)  # fallback umum
+
+        params = {
+            "config": None,
+            "fe_params": self.fe_params
+        }
+
+        if self.config is not None:
+            if hasattr(self.config, "dict"):
+                params["config"] = self.config.dict()
+            elif hasattr(self.config, "__dict__"):
+                params["config"] = vars(self.config)
+            else:
+                params["config"] = dict(self.config)
+
+        # ✅ pastikan JSON safe
+        params = _make_json_safe(params)
+
+        with open(path, "w") as f:
+            json.dump(params, f, indent=4)
+
+        if self.logger:
+            self.logger.info(f"🔖 FeatureEngineering params disimpan ke {path}")
+
+    def load_params(self, path: str):
+        """Load parameter konfigurasi FeatureEngineering dari JSON (config + fe_params)."""
+        import json
+        with open(path, "r") as f:
+            params = json.load(f)
+
+        if "config" in params and params["config"] is not None:
+            self.config = Config(**params["config"])
+        if "fe_params" in params:
+            self.fe_params = params["fe_params"]
+            self.nonstd = NonStandardFeatures(params=self.fe_params.get("nonstd_params", {}))
+
+        if self.logger:
+            self.logger.info(f"📥 FeatureEngineering params dimuat dari {path}")
+
+        return params

@@ -15,7 +15,7 @@ class Config:
     # DataLoader
     # ======================
     DATA_FILE = "data.csv"
-    SYMBOLS = ["EURUSD"]
+    SYMBOLS = ["XAUUSD"]
     TIMEFRAME = "15T"                     # Pandas offset alias
     BAR_INTERVALS = ["15T", "1H"]
     SESSION_FILTER = "all"               # e.g. "asia", "us", "europe"
@@ -54,7 +54,7 @@ class Config:
     
     # Default signal parameters
     DEFAULT_SIGNAL_PARAMS = {
-        'future_bars': 5,
+        'future_bars': 8,
         'threshold': 0.0005,
         'dynamic_threshold': True,
         'use_triple_barrier': True,
@@ -82,8 +82,12 @@ class Config:
         "confidence_threshold": 0.6,
         "performance_window": 100,
     }
-
     # ======================
+    # CatBoost Trainer #
+    # ======================
+    tune = True
+    n_trials = 20
+    
     # Validation
     # ======================
     CV_SPLITS = 5
@@ -96,6 +100,6 @@ class Config:
     # ======================
     # Logging
     # ======================
-    LOG_LEVEL = "INFO"
+    LOG_LEVEL = "DEBUG"
     LOG_FORMAT = "%(asctime)s [%(levelname)-8s] %(name)-12s %(message)s"
     LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"

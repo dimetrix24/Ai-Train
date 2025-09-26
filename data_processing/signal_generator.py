@@ -11,7 +11,7 @@ from data_processing.settings import DataProcessingConfig
 
 # Tentukan root project = folder tempat main_train_multi.py berada
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PARAMS_DIR = os.path.join(PROJECT_ROOT, "outputs", "model")
+PARAMS_DIR = os.path.join(PROJECT_ROOT, "outputs", "models")
 
 class SignalGenerator:
 	    
@@ -67,27 +67,63 @@ class SignalGenerator:
         self.label_only_base_timeframe = label_only_base_timeframe
         self.base_timeframe_column = base_timeframe_column
 
-    def _save_best_params(self, params: dict):
-        """Simpan hasil tuning ke file JSON"""
+    def _save_best_params(self, data: Dict[str, Any]):
+        """Simpan parameter terbaik + skor ke file JSON"""
         try:
-            os.makedirs(os.path.dirname(self.PARAMS_FILE), exist_ok=True)  # pastikan folder ada
             with open(self.PARAMS_FILE, "w") as f:
-                json.dump(params, f, indent=4)
-            self.logger.info(f"✅ Best params saved to {self.PARAMS_FILE}")
+                json.dump(data, f, indent=4)
+            self.logger.info(f"💾 Best params updated: {self.PARAMS_FILE}")
         except Exception as e:
-            self.logger.error(f"Failed to save params: {e}")
+            self.logger.error(f"❌ Gagal menyimpan best params: {e}")
 
-    def _load_best_params(self) -> dict:
-        """Load best params dari file JSON"""
-        if os.path.exists(self.PARAMS_FILE):
-            try:
-                with open(self.PARAMS_FILE, "r") as f:
-                    params = json.load(f)
-                self.logger.info(f"✅ Loaded best params from {self.PARAMS_FILE}: {params}")
-                return params
-            except Exception as e:
-                self.logger.error(f"Failed to load params: {e}")
-        return {}
+    def _load_best_params(self) -> Dict[str, Any]:
+        """Load best params dari JSON (jika ada)"""
+        try:
+            with open(self.PARAMS_FILE, "r") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            return {}
+        except Exception as e:
+            self.logger.warning(f"⚠️ Gagal load best params: {e}")
+            return {}
+
+    def tune_parameters(self, df: pd.DataFrame) -> Dict[str, Any]:
+        """Tuning parameter + simpan kalau lebih baik dari sebelumnya"""
+        self.logger.info("🔧 Mulai parameter tuning...")
+
+        if self.use_triple_barrier:
+            best_params = self._tune_triple_barrier_parameters(df)
+        else:
+            best_params = self._tune_threshold_parameters(df)
+
+        # Ambil skor terbaru dari optuna
+        best_score = None
+        if hasattr(self, "last_study") and self.last_study is not None:
+            best_score = self.last_study.best_value
+
+        # Ambil skor lama
+        old_data = self._load_best_params()
+        old_score = old_data.get("best_score", -1)
+
+        if best_score is None:
+            self.logger.warning("⚠️ Tidak ada best_score dari tuning, pakai default params.")
+            self.best_params = best_params
+            return best_params
+
+        # Bandingkan skor
+        if best_score > old_score:
+            save_data = {
+                "best_score": best_score,
+                "params": best_params
+            }
+            self._save_best_params(save_data)
+            self.best_params = best_params
+            self.logger.info(f"✅ New best params disimpan (score {best_score:.4f} > {old_score:.4f})")
+        else:
+            self.logger.info(f"⚠️ Skor baru {best_score:.4f} <= lama {old_score:.4f}, keep old params")
+            self.best_params = old_data.get("params", best_params)
+
+        return self.best_params
 
     # ==========================================================
     # ENHANCED: Data Validation

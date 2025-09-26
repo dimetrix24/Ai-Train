@@ -9,6 +9,7 @@ scikit-learn
 imbalanced-learn
 lightgbm
 xgboost
+catboost
 optuna
 
 # Technical Analysis
@@ -23,7 +24,9 @@ seaborn
 joblib
 tqdm
 onnx
-
+skl2onnx
+onnxmltools
+onnxruntime
 # Logging and Configuration
 python-dotenv
 

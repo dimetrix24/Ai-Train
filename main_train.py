@@ -9,7 +9,7 @@ from data_processing.data_loader import DataLoader
 from data_processing.feature_engineering import FeatureEngineering
 from data_processing.signal_generator import SignalGenerator
 from session_filter import SessionFilter
-from model.xgboost_trainer import XGBoostTrainer
+from model.catboost_trainer import CatBoostTrainer
 from model.lightgbm_trainer import LightGBMTrainer
 from model.ensemble_trainer import EnsembleTrainer
 from evaluator import ModelEvaluator
@@ -636,23 +636,93 @@ def run(args):
             df_features_all=X_train_raw
         )
         model = trainer.train(X_train, y_train, task_type=task_type)
+
         # 🔎 Tambahan: evaluasi trading metrics lengkap
         logger.info("PHASE 6B: EnsembleTrainer trading metrics evaluation")
         try:
             trainer.evaluate(X_test, y_test, df_features=X_test_raw)
         except Exception as e:
             logger.warning(f"Trading metrics evaluation skipped: {e}")
+
         # ✅ Export ke ONNX setelah training selesai
         try:
-            trainer.export_onnx(X_train, prefix=f"ensemble_{task_type}")
+            from utils.onnx_utils import export_ensemble_to_onnx
+            sample_input = X_train.iloc[:1] if isinstance(X_train, pd.DataFrame) else X_train[:1]
+            export_ensemble_to_onnx(trainer, sample_input, prefix=os.path.join(config.model_dir, f"ensemble_{task_type}"))
         except Exception as e:
             logger.error(f"ONNX export failed: {e}")
-    else:  # XGBoost
-        model_path = os.path.join(config.model_dir, f"{args.trainer}_{task_type}.pkl")
-        trainer = XGBoostTrainer(trainer_type=args.trainer, logger=logger, save_dir=config.model_dir)
-        model = trainer.train(X_train, y_train)
-        trainer.save(f"{args.trainer}_{task_type}.pkl")
+    else:  # CatBoost
+        model_filename = f"{args.trainer}_{task_type}.pkl"
+        model_path = os.path.join(config.model_dir, model_filename)
+    
+        # Inisialisasi trainer
+        trainer = CatBoostTrainer(
+            logger=logger,
+            model_path=model_path,          # ✅ Simpan otomatis ke path ini
+            fe=fe,
+            tune=Config.tune, # opsional: aktifkan tuning
+            n_trials=Config.n_trials,
+            objective_metric="profit_weighted_accuracy",
+            min_samples_per_fold=50,
+            gap_ratio=0.02,
+            n_splits=5
+        )
+    
+        # Training (df_features_all dilewatkan di sini!)
+        model = trainer.train(
+            X_train, 
+            y_train, 
+            task_type=task_type,
+            df_features_all=X_train_raw  # ✅ untuk profit-weighted accuracy
+        )
+    
+        # 🔎 Evaluasi dengan ModelEvaluator (bukan method trainer!)
+        logger.info("PHASE 6B: Evaluasi metrik trading lengkap...")
+        try:
+    
+            evaluator = ModelEvaluator(logger=logger)
+            eval_results = evaluator.evaluate(
+                model=model,                    # atau model_path jika pakai file
+                X_test=X_test,
+                y_test=y_test,
+                df_features=X_test_raw,         # DataFrame dengan kolom 'close'
+                task_type=task_type
+            )
+            logger.info(f"✅ Evaluasi selesai. Accuracy: {eval_results['accuracy']:.4f}, "
+                   f"Profit-Weighted Acc: {eval_results['profit_weighted_accuracy']:.4f}")
+        except Exception as e:
+            logger.warning(f"Trading metrics evaluation skipped: {e}")
+        logger.info("PHASE 6C: Evaluasi confidence & regime...")
+        try:
+            conf_result = trainer.predict_with_confidence(
+                X_test,
+                threshold=0.6,
+                df_features=X_test_raw
+            )
+            high_conf_preds = conf_result["preds"]
+            regime = conf_result["regime"]
 
+            # Contoh: hitung akurasi hanya untuk high-confidence
+            mask = high_conf_preds != None
+            if np.any(mask):
+                acc_high_conf = accuracy_score(y_test[mask], high_conf_preds[mask])
+                logger.info(f"High-confidence accuracy: {acc_high_conf:.4f}")
+
+            # Contoh: distribusi regime
+            if regime is not None:
+                logger.info(f"Market regime distribusi: {regime.value_counts().to_dict()}")
+        except Exception as e:
+            logger.warning(f"Confidence/regime evaluation skipped: {e}")
+        # ✅ Export ke ONNX
+        try:
+            # Pastikan X_train berupa DataFrame atau array dengan kolom
+            sample_input = X_train.iloc[:1] if isinstance(X_train, pd.DataFrame) else X_train[:1]
+            trainer.export_to_onnx(
+                X_sample=sample_input,
+                prefix=os.path.join(config.model_dir, f"catboost_{task_type}")
+            )
+        except Exception as e:
+            logger.error(f"ONNX export gagal: {e}")
     # --- PHASE 7: Evaluation ---
     logger.info("PHASE 7: Evaluation")
     evaluator = ModelEvaluator(logger=logger)
@@ -703,8 +773,8 @@ if __name__ == "__main__":
     parser.add_argument("--use-triple-barrier", action="store_true")
 
     # Model arguments
-    parser.add_argument("--trainer", type=str, default="xgboost",
-                       choices=["xgboost", "lightgbm", "ensemble"])
+    parser.add_argument("--trainer", type=str, default="catboost",
+                       choices=["catboost", "lightgbm", "ensemble"])
     parser.add_argument("--tune-ensemble", action="store_true")
     parser.add_argument("--n-trials", type=int, default=20)
 

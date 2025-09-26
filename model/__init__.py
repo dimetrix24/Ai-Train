@@ -1,11 +1,11 @@
 # Model package initialization
-from .xgboost_trainer import XGBoostTrainer
+from .catboost_trainer import CatBoostTrainer
 from .hyperparameter_tuning import HyperparameterOptimizer
 from .ensemble_trainer import EnsembleTrainer
 from .lightgbm_trainer import LightGBMTrainer
 
 __all__ = [
-    'XGBoostTrainer',
+    'CatBoostTrainer',
     'HyperparameterOptimizer',
     'EnsembleTrainer'
     'LightGBMTrainer' 

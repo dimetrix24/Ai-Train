@@ -1,5 +1,5 @@
 {
-    "future_bars": 18,
-    "threshold": 0.0003103612815046073,
-    "dynamic_threshold": false
+    "future_bars": 9,
+    "threshold": 0.007969454818643935,
+    "dynamic_threshold": true
 }
